@@ -1,4 +1,4 @@
-# ***煤矿***
+># ***煤矿***
 ## **使用阿里云安装 docker**
 ```bash
 curl -fsSL https://get.docker.com -o get-docker.sh
@@ -120,3 +120,5 @@ vim /etc/fstab
 ### 测试ssh能否连上docker内
 
 - `ssh root@172.0.0.1 -p 36022`
+  
+  
