@@ -1,4 +1,7 @@
 ># ***备忘、文档存档、笔记、命令等***
+## 备忘 🗻
+- 各种格式视频播放 [PotPlayer](http://potplayer.tv/?lang=zh_CN)
+
 ## 文档 ✨
 - [煤矿文档](/documnet/coal_config.md)
   
