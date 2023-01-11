@@ -12,3 +12,4 @@
 ## 文件 🎉
 - [煤矿triton dockerfile](file/dockerfile)
 - [煤矿自动启动脚本](file/autostart.sh) 
+- [视频裁剪脚本](file/video_cap.py)
