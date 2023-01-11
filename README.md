@@ -8,6 +8,7 @@
   
 ## 笔记 🔥
 - [docker笔记](note/docker.md)
+- [MysSQL笔记](note/mysql.md)
 
 ## 文件 🎉
 - [煤矿triton dockerfile](file/dockerfile)
