@@ -11,6 +11,8 @@
 - [MySQL笔记](note/mysql.md)
 
 ## 文件 🎉
+- [视频裁剪脚本](file/video_cap.py)
+- [视频转图片脚本](file/video_2_picture.py)
+- [yolo格式标签修改脚本](file/txt_modified.py)
 - [煤矿triton dockerfile](file/dockerfile)
 - [煤矿自动启动脚本](file/autostart.sh) 
-- [视频裁剪脚本](file/video_cap.py)
