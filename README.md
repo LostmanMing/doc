@@ -5,6 +5,7 @@
 
 ## 文档 ✨
 - [煤矿文档](/documnet/coal_config.md)
+- [win下docker+wsl](documnet/docker_desktop换盘.md)
   
 ## 笔记 🔥
 - [docker笔记](note/docker.md)
