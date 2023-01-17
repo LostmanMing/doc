@@ -17,3 +17,6 @@
 - [yolo格式标签修改脚本](file/txt_modified.py)
 - [煤矿triton dockerfile](file/dockerfile)
 - [煤矿自动启动脚本](file/autostart.sh) 
+## 命令 🏜️
+> 实时查看文件尾部输出的日志
+    `tail -f file`

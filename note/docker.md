@@ -288,3 +288,22 @@
 
 
 
+
+> ## **docker compose**
+### 概念
+是docker官方的开源项目，实现对单机docker容器的快速编排  
+
+[官方文档](https://docs.docker.com/compose/compose-file/compose-file-v3/)  
+- 一文件
+    `docker-compose.yml`
+- 两要素
+    1. 服务 
+        一个个应用容器实例
+    2. 工程
+        由一组关联的容器组成的一个完整的业务单元，在 `docker-compose.yml` 文件中定义
+### 使用
+三个步骤
+- 编写 `dockerfile` 定义各个应用并构建对应的镜像文件
+- 使用 `docker-compose.yml` 定义夜歌完整的业务单元，安排好整体应用的各个容器服务
+- 执行 `docker-compose up` 命令来启动并运行整个应用程序，完成一键部署上线
+  
