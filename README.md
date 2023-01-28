@@ -8,7 +8,7 @@
 - [win下docker+wsl](documnet/docker_desktop换盘.md)
   
 ## 笔记 🔥
-- [docker笔记](note/docker/docker.md)
+- [docker笔记](note/docker.md)
 - [MySQL笔记](note/mysql.md)
 
 ## 文件 🎉
