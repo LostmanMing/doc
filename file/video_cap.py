@@ -60,14 +60,14 @@ def capture_video(video_path, result_video_path, video, result_video, start_time
 # 20 -39
 
 if __name__ == '__main__':
-    video_path = "F:\\EOC\\coal\\数据\\长物\\"            # 原视频所在目录
-    result_video_path = f"F:\\EOC\\coal\\数据\\longthing\\"  # 目标视频存放目录
+    video_path = "F:\\EOC\\coal\\data\\矿车\\"            # 原视频所在目录
+    result_video_path = f"F:\\EOC\\coal\\data\\long_things\\"  # 目标视频存放目录
 
     video = "行车不行人.mp4"             # 原视频文件名
-    result_video = "tramcar2.mp4"    # 目标视频文件名
+    result_video = "people.mp4"    # 目标视频文件名
 
-    start_time = 0 * 60 + 20                     # 分钟 * 60 +秒数
-    end_time = 0 * 60 + 39                    # 分钟 * 60 +秒数
+    start_time = 0 * 60 + 0                     # 分钟 * 60 +秒数
+    end_time = 0 * 60 + 2                    # 分钟 * 60 +秒数
 
     capture_video(video_path, result_video_path, video, result_video, start_time, end_time)
 
