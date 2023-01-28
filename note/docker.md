@@ -1,4 +1,17 @@
 > # ***Docker***
+- [**基本步骤**](#基本步骤)
+- [**学习资料**](#学习资料)
+  - [**笔记**](#笔记)
+  - [**Docker常用命令**](#docker常用命令)
+  - [**Docker容器数据卷**](#docker容器数据卷)
+  - [**Dockerfile**](#dockerfile)
+  - [**docke网络**](#docke网络)
+  - [**docker compose**](#docker-compose)
+    - [概念](#概念)
+    - [使用](#使用)
+  - [**docker Portainer**](#docker-portainer)
+  - [**CIG**](#cig)
+
 
 # **基本步骤**
 - dockerfile : 构建文件，定义了一切的步骤，源代码，命令脚本
@@ -19,7 +32,7 @@
 - [x] Docker-compose
 - [x] Docker Portainer
 - [ ] CIG(CAdvisor+InfluxDB+Granfana)
-> ## **Docker常用命令**
+ ## **Docker常用命令**
  1. ### **帮助类启动命令**
     - *启动docker*  
     `systemctl start docker`
@@ -129,7 +142,7 @@
     - *从tar包中创建一个新的文件系统再导入为镜像（对应export命令）*
     `cat 文件名.tar | docker import - 镜像用户/镜像名:TAG` 
    
-> ## **Docker容器数据卷**
+ ## **Docker容器数据卷**
 1. ### *什么是容器数据卷*
     容器数据卷是一种数据共享技术，Docker中产生的数据同步到本地。  
     目录的挂载，将容器内的目录，挂载到宿主机上。  
@@ -160,7 +173,7 @@
     # 构建镜像时没有指定挂载卷，才会在创建时手动 -v 指定挂载数据卷。
     
     ```
-> ## **Dockerfile**
+ ## **Dockerfile**
 >> dockefile 就是用来构建 docker 镜像的构建文件！命令脚本！ 
 
 [Docker HUB](https://hub.docker.com/) 中99%的镜像都是从这个基础镜像过来的 `FROM scrath` ，再此基础上添加需要的软件和配置
@@ -227,7 +240,7 @@
 
      
   
-> ## **docke网络**
+ ## **docke网络**
   每启动一个容器，docker就会给容器分配一个ip，安装docker，就会有一个默认网卡 docker0，桥接模式，使用的技术是 veth-pair。
 - veth-pair
 
@@ -294,7 +307,7 @@
 
 
 
-> ## **docker compose**
+ ## **docker compose**
 ### 概念
 是docker官方的开源项目，实现对单机docker容器的快速编排  
 
@@ -329,9 +342,9 @@
     `docker-compose stop`      # 停止服务
 
 
-> ## **docker Portainer**
+ ## **docker Portainer**
 可以监控容器的轻量级可视化工具
 -  [安装地址](https://docs.portainer.io/start/install/server/docker/linux)
 
-> ## **CIG**
+ ## **CIG**
 CAdvisor监控收集 + InfluxDB存储数据 + Granfana展示图表
