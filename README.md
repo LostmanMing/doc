@@ -10,6 +10,8 @@
 ## 笔记 🔥
 - [docker笔记](note/docker.md)
 - [MySQL笔记](note/mysql.md)
+- [vim笔记](note/vim.md)
+- [redis笔记](note/redis/Redis.md)
 
 ## 文件 🎉
 - [视频裁剪脚本](file/video_cap.py)
