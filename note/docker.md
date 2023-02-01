@@ -92,6 +92,7 @@
         | `--gpus` |   在容器中能够使用的gpu，一般 `--gpus=all` |
         | `-net`   | host模式：使用 `--net=host` 指定。（使用本地主机IP）<br>none模式；使用 `--net=none` 指定。<br>bridge模式：使用 `--net=bridge` 指定，默认设置。<br>container模式：使用 `--net=container:NAME_or_ID` 指定 |  
         | `--restart` |   `--restart=no` 默认值，表示容器退出时，docker不自动重启容器<br>`--restart=on-failure:n `若容器的退出状态非0，则docker自动重启容器，还可以指定重启次数n，若超过指定次数未能启动容器则放弃<br>`--restart=always` 容器退出时总是重启<br>`--restart=unless-stopped` 容器退出时总是重启，但不考虑Docker守护进程启动时就已经停止的容器
+        |`--privileged=true`|让容器内的root拥有真正的root权限，否则，容器内的root只是外部的一个普通用户权限。|
 
 
 
