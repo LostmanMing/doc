@@ -5,6 +5,7 @@
 - [cmake下载地址](https://cmake.org/download/)
 - [hiredis下载地址](https://github.com/redis/hiredis)
 - [redis++下载地址](https://github.com/sewenew/redis-plus-plus)
+- [redis.conf下载地址](https://redis.io/topics/config/)
 ## 系统内设置
 1. 中文输入法
      `sudo apt-get install ibus-pinyin`  
@@ -97,4 +98,22 @@
 
     测试
     ./build/test/test_redis++ -h host -p port -a auth
+
+    # 修改redis.conf
+    1. 开启redis验证 （可选）
+        requirepass xxx
+
+    2. 注释掉 bind 127.0.0.1 （*必做）
+        # bind 127.0.0.1
+
+    3. 将daemonize yes注释掉或改成 daemonize no ,该配置与docker run -d 冲突，会导致容器启动失败 （*必做）
+        daemonize no
+
+    4.redis数据持久化 （可选）
+        appendonly yes
+    
+    # docker 启动redis
+        sudo docker run -p 6379:6379 --name redis --privileged=true -v /app/redis/redis.conf:/etc/redis/redis.conf -v /app/redis/data:/data -d redis redis-server /etc/redis/redis.conf
+    
+    redis++ 编译时 需要链接 lhiredis lredis++ pthread 库
     ```
