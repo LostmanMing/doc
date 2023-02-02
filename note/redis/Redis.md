@@ -37,7 +37,7 @@
     - [4.8 Redis命令-SortedSet类型](#48-redis命令-sortedset类型)
     - [4.9 Redis命令-Geospatil类型](#49-redis命令-geospatil类型)
     - [4.9 Redis命令-HyperLogLog类型](#49-redis命令-hyperloglog类型)
-    - [4.9 Redis命令-Bitmaps类型](#49-redis命令-bitmaps类型)
+    - [4.9 Redis命令-Bitmap类型](#49-redis命令-bitmap类型)
   - [5.Redis的Java客户端-Jedis](#5redis的java客户端-jedis)
     - [5.1 Jedis快速入门](#51-jedis快速入门)
     - [5.2 Jedis连接池](#52-jedis连接池)
@@ -51,6 +51,7 @@
     - [6.2 .数据序列化器](#62-数据序列化器)
     - [6.3 StringRedisTemplate](#63-stringredistemplate)
     - [6.4 Hash结构操作](#64-hash结构操作)
+  - [7.Redis事务](#7redis事务)
 
 ## 1.Redis简单介绍
 Redis是一个开源的，内存中的数据结构存储系统，它可以用作==数据库==、==缓存==和==消息中间件==MQ。它支持多种类型的数据结构，如字符串（string），散列（hash），列表（lists），集合（sets），有序集合（sorted sets）与范围查询，bitmaps，hyperloglogs和地理空间（geospatial）索引半径查询。Redis内置了复制（replication）,LUA脚本，LRU驱动事件，事务和不同级别的磁盘持久化，并通过Redis哨兵（Sentinel）和自动分区（Cluster）提高高可用性。 
@@ -1182,8 +1183,8 @@ Redis Hyperloglog基数统计的算法!
 - Pfcount：返回给定 HyperLogLog 的基数估算值
 - Pgmerge：将多个 HyperLogLog 合并为一个 HyperLogLog
 
-### 4.9 Redis命令-Bitmaps类型
-统计用户信息，两个状态的，都可以使用Bitmaps
+### 4.9 Redis命令-Bitmap类型
+统计用户信息，两个状态的，都可以使用Bitmap
 Bitmaps位图，只有两个状态，用二进制位 0 1 保存 
 
 
@@ -1674,4 +1675,140 @@ class RedisStringTests {
         System.out.println("entries = " + entries);
     }
 }
+```
+
+## 7.Redis事务
+Redis事务的本质：一组命令的集合！一个事务中的所有命令会被序列化，执行过程中按顺序执行
+一次性、顺序性、排他性
+
+==Redis事务没有隔离级别的概念==
+==Redis单条命令保证原子性，但事务不保证原子性==
+
+- 开启事务(multi)
+- 命令入队(...)
+- 执行事务(exec)
+
+>正常执行事务
+```bash
+127.0.0.1:6379> multi         # 开启事务
+OK
+# 命令入队
+127.0.0.1:6379(TX)> set k1 v1
+QUEUED
+127.0.0.1:6379(TX)> set k2 v2
+QUEUED
+127.0.0.1:6379(TX)> get k1
+QUEUED
+127.0.0.1:6379(TX)> get k2
+QUEUED
+127.0.0.1:6379(TX)> exec # 执行事务
+1) OK
+2) OK
+3) "v1"
+4) "v2"
+```
+>放弃事务
+```bash
+127.0.0.1:6379> multi          # 开启事务
+OK
+127.0.0.1:6379(TX)> set k1 v1
+QUEUED
+127.0.0.1:6379(TX)> set k2 v2
+QUEUED
+127.0.0.1:6379(TX)> DISCARD    # 放弃事务
+OK
+127.0.0.1:6379> get k1  
+(nil)                          # 事务中命令未执行
+ 
+```
+
+>编译型异常（代码有问题！命令有错！），事务中的所有命令都不会执行！
+```bash
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379(TX)> set k1 v1
+QUEUED
+127.0.0.1:6379(TX)> set k2 v2
+QUEUED
+127.0.0.1:6379(TX)> get k1 k2
+(error) ERR wrong number of arguments for 'get' command    # 编译时出错
+127.0.0.1:6379(TX)> set k3 v3
+QUEUED
+127.0.0.1:6379(TX)> exec
+(error) EXECABORT Transaction discarded because of previous errors.
+127.0.0.1:6379> get k1
+(nil)                                                      # 所有命令均未执行
+```
+>运行时异常，错误命令抛出异常，其他命令正常执行。
+
+
+可以看出Redis事务没有原子性
+```bash
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379(TX)> set k1 v1
+QUEUED
+127.0.0.1:6379(TX)> incr k1
+QUEUED
+127.0.0.1:6379(TX)> set k2 v2
+QUEUED
+127.0.0.1:6379(TX)> exec
+1) OK
+2) (error) ERR value is not an integer or out of range   # 只有错误命令未执行
+3) OK
+127.0.0.1:6379> get k2
+"v2"
+
+```
+
+>监控
+
+- WATCH
+- UNWATCH
+
+**悲观锁**
+   - 很悲观，认为什么时候都会出问题，无论做什么都会加锁。
+
+
+**乐观锁**  
+   - 很乐观，认为什么时候都不会出问题，所以不会上锁，更新数据的时候判断在此期间是否有人修改过这个数据。
+
+```bash
+# 正常执行成功
+127.0.0.1:6379> set money 100
+OK
+127.0.0.1:6379> set out 0
+OK
+127.0.0.1:6379> watch money           # 监视
+OK
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379(TX)> DECRBY money 20
+QUEUED
+127.0.0.1:6379(TX)> INCRBY out 20
+QUEUED
+127.0.0.1:6379(TX)> exec               # 事务正常结束，数据期间没有改变
+1) (integer) 80
+2) (integer) 20
+
+
+# 两个客户端同时操作，使用watch当做redis的乐观锁
+# cli-1
+127.0.0.1:6379> get money
+"80"
+127.0.0.1:6379> set money 1000
+OK
+# cli-2
+127.0.0.1:6379> watch money
+OK
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379(TX)> DECRBY money 10
+QUEUED
+127.0.0.1:6379(TX)> INCRBY out 10
+QUEUED
+127.0.0.1:6379(TX)> exec           # 事务开启后执行前，另外一个客户端修改了值，这个时候会导致失误执行失败
+
+# 事务执行后会自动解锁
+(nil)
 ```
