@@ -1,5 +1,57 @@
 # 基础篇Redis
-- [官网查命令](https://www.redis.net.cn/order/)
+ [官网查命令](https://www.redis.net.cn/order/)
+# 目录
+- [基础篇Redis](#基础篇redis)
+- [目录](#目录)
+  - [1.Redis简单介绍](#1redis简单介绍)
+  - [2.课程目录](#2课程目录)
+  - [3.初始Redis](#3初始redis)
+    - [3.1.认识NoSQL](#31认识nosql)
+      - [3.1.1.结构化与非结构化](#311结构化与非结构化)
+      - [3.1.2.关联和非关联](#312关联和非关联)
+      - [3.1.3.查询方式](#313查询方式)
+      - [3.1.4.事务](#314事务)
+      - [3.1.5.总结](#315总结)
+    - [3.2.认识Redis](#32认识redis)
+    - [3.3.安装Redis](#33安装redis)
+      - [3.3.1.依赖库](#331依赖库)
+      - [3.3.2.上传安装包并解压](#332上传安装包并解压)
+      - [3.3.3.启动](#333启动)
+      - [3.3.4.默认启动](#334默认启动)
+      - [3.3.5.指定配置启动](#335指定配置启动)
+      - [3.3.6.开机自启](#336开机自启)
+      - [3.3.6.docker 启动redis](#336docker-启动redis)
+    - [3.4.Redis桌面客户端](#34redis桌面客户端)
+      - [3.4.1.Redis命令行客户端](#341redis命令行客户端)
+      - [3.4.2.图形化桌面客户端](#342图形化桌面客户端)
+      - [3.4.3.安装](#343安装)
+      - [3.4.4.建立连接](#344建立连接)
+  - [4.Redis常见命令](#4redis常见命令)
+    - [4.1 Redis数据结构介绍](#41-redis数据结构介绍)
+    - [4.2 Redis 通用命令](#42-redis-通用命令)
+    - [4.3 Redis命令-String命令](#43-redis命令-string命令)
+    - [4.4 Redis命令-Key的层级结构](#44-redis命令-key的层级结构)
+    - [4.5 Redis命令-Hash命令](#45-redis命令-hash命令)
+    - [4.6 Redis命令-List命令](#46-redis命令-list命令)
+    - [4.7 Redis命令-Set命令](#47-redis命令-set命令)
+    - [4.8 Redis命令-SortedSet类型](#48-redis命令-sortedset类型)
+    - [4.9 Redis命令-Geospatil类型](#49-redis命令-geospatil类型)
+    - [4.9 Redis命令-HyperLogLog类型](#49-redis命令-hyperloglog类型)
+    - [4.9 Redis命令-Bitmaps类型](#49-redis命令-bitmaps类型)
+  - [5.Redis的Java客户端-Jedis](#5redis的java客户端-jedis)
+    - [5.1 Jedis快速入门](#51-jedis快速入门)
+    - [5.2 Jedis连接池](#52-jedis连接池)
+      - [5.2.1.创建Jedis的连接池](#521创建jedis的连接池)
+      - [5.2.2.改造原始代码](#522改造原始代码)
+  - [6.Redis的Java客户端-SpringDataRedis](#6redis的java客户端-springdataredis)
+    - [6.1.快速入门](#61快速入门)
+      - [6.1.1.导入pom坐标](#611导入pom坐标)
+      - [6.1.2 .配置文件](#612-配置文件)
+      - [6.1.3.测试代码](#613测试代码)
+    - [6.2 .数据序列化器](#62-数据序列化器)
+    - [6.3 StringRedisTemplate](#63-stringredistemplate)
+    - [6.4 Hash结构操作](#64-hash结构操作)
+
 ## 1.Redis简单介绍
 Redis是一个开源的，内存中的数据结构存储系统，它可以用作==数据库==、==缓存==和==消息中间件==MQ。它支持多种类型的数据结构，如字符串（string），散列（hash），列表（lists），集合（sets），有序集合（sorted sets）与范围查询，bitmaps，hyperloglogs和地理空间（geospatial）索引半径查询。Redis内置了复制（replication）,LUA脚本，LRU驱动事件，事务和不同级别的磁盘持久化，并通过Redis哨兵（Sentinel）和自动分区（Cluster）提高高可用性。 
 
@@ -469,9 +521,10 @@ Redis为了方便我们学习，将操作不同数据类型的命令也做了分
 - EXPIRE：给一个key设置有效期，有效期到期时该key会被自动删除
 - TTL：查看一个KEY的剩余有效期
 - TYPE： 查看一个KEY的类型
-- FLASHDB：清空当前数据库，不执行持久化操作
-- FLASHALL：清空所有数据库并执行持久化操作
+- FLUSHDB：清空当前数据库，不执行持久化操作
+- FLUSHALL：清空所有数据库并执行持久化操作
 - MOVE：移动到另一个数据库
+- APPEND：在对应key的val后增加信息
 通过help [command] 可以查看一个命令的具体用法，例如：
 
 ![1652887865189](assets/1652887865189.png)
@@ -527,7 +580,7 @@ OK
 127.0.0.1:6379>
 ```
 
-**贴心小提示：同学们在拷贝代码的时候，只需要拷贝对应的命令哦~**
+**Note：拷贝代码的时候，只需要拷贝对应的命令**
 
 * EXISTS
 
@@ -548,7 +601,7 @@ OK
 
 * EXPIRE
 
-**Note**：内存非常宝贵，对于一些数据，我们应当给他一些过期时间，当过期时间到了之后，他就会自动被删除~
+**Note**：内存非常宝贵，对于一些数据，我们应当给他一些过期时间，当过期时间到了之后，他就会自动被删除
 
 ```sh
 127.0.0.1:6379> expire age 10
@@ -593,18 +646,24 @@ String类型，也就是字符串类型，是Redis中最简单的存储类型。
 String的常见命令有：
 
 * SET：添加或者修改已经存在的一个String类型的键值对
-* GET：根据key获取String类型的value
-* MSET：批量添加多个String类型的键值对
-* MGET：根据多个key获取多个String类型的value
-* INCR：让一个整型的key自增1
-* INCRBY:让一个整型的key自增并指定步长，例如：incrby num 2 让num值自增2
-* INCRBYFLOAT：让一个浮点类型的数字自增并指定步长
+* SETRANGE：替换修改
 * SETNX：添加一个String类型的键值对，前提是这个key不存在，否则不执行
 * SETEX：添加一个String类型的键值对，并且指定有效期
+* MSET：批量添加多个String类型的键值对
+* MSETNX：批量添加多个String类型的键值对，原子性，要么同时成功，要么同时失败
+* GET：根据key获取String类型的value
+* GETRANG：获取字符串子串 
+* MGET：根据多个key获取多个String类型的value
+* GETSET：先获取再设置
+* INCR：让一个整型的key自增1
+* DECR：让一个整型的key自减1
+* INCRBY:让一个整型的key自增并指定步长，例如：incrby num 2 让num值自增2
+* INCRBYFLOAT：让一个浮点类型的数字自增并指定步长
+* STRLEN：返回字符串长度
+* APPEND：在对应key的val后增加字符串 （如果key不存在，及创建key）
+**Note**：以上命令除了INCRBYFLOAT 都是常用命令, SET 和GET: 如果key不存在则是新增，如果存在则是修改
 
-**贴心小提示**：以上命令除了INCRBYFLOAT 都是常用命令
-
-* SET 和GET: 如果key不存在则是新增，如果存在则是修改
+>设置key时可以使用 : 分级， usr:1:name {usr}:{id}:{field}
 
 ```java
 127.0.0.1:6379> set name Rose  //原来不存在
@@ -751,22 +810,23 @@ Hash结构可以将对象中的每个字段独立存储，可以针对单个字�
 
 ![1652942027719](assets/1652942027719.png)
 
+Hash 适合存储==对象==类型.
+
 **Hash类型的常见命令**
 
 - HSET key field value：添加或者修改hash类型key的field的值
-
+- HMSET：批量添加多个hash类型key的field的值 
 - HGET key field：获取一个hash类型key的field的值
-
-- HMSET：批量添加多个hash类型key的field的值
-
 - HMGET：批量获取多个hash类型key的field的值
-
 - HGETALL：获取一个hash类型的key中的所有的field和value
 - HKEYS：获取一个hash类型的key中的所有的field
 - HINCRBY:让一个hash类型key的字段值自增并指定步长
 - HSETNX：添加一个hash类型的key的field值，前提是这个field不存在，否则不执行
+- HDEL：删除指定的key及其val
+- HLEN：返回hash字段数量
+- HEXISTS：判断指定key是否存在
 
-**贴心小提示**：哈希结构也是我们以后实际开发中常用的命令哟
+**Note**：哈希结构也是我们以后实际开发中常用的命令哟
 
 * HSET和HGET
 
@@ -871,11 +931,18 @@ Redis中的List类型与Java中的LinkedList类似，可以看做是一个双向
 **List的常见命令有：**
 
 - LPUSH key element ... ：向列表左侧插入一个或多个元素
-- LPOP key：移除并返回列表左侧的第一个元素，没有则返回nil
 - RPUSH key element ... ：向列表右侧插入一个或多个元素
+- LPOP key：移除并返回列表左侧的第一个元素，没有则返回nil
 - RPOP key：移除并返回列表右侧的第一个元素
 - LRANGE key star end：返回一段角标范围内的所有元素
 - BLPOP和BRPOP：与LPOP和RPOP类似，只不过在没有元素时等待指定时间，而不是直接返回nil
+- LINDEX：通过下标获得list中的某个值
+- LLEN：获取list长度
+- LREM：移除list指定值
+- LTRIM：截取list中指定范围的元素
+- RPOPLPUSH: 移除列表的最后一个元素，并将它保存到另一个列表中
+- LSET：将列表中指定下标的值替换为另一个值
+- LINSERT：
 
 ![1652943604992](.\Redis.assets\1652943604992.png)
 
@@ -905,6 +972,17 @@ Redis中的List类型与Java中的LinkedList类似，可以看做是一个双向
 2) "4"
 ```
 
+* LINSERT
+`LINSERT LINSERT key BEFORE|AFTER pivot element`
+
+```java
+127.0.0.1:6379> LINSERT list after word my
+(integer) 3
+127.0.0.1:6379> LRANGE list 0 -1
+1) "word"
+2) "my"
+3) "hello"
+```
 ### 4.7 Redis命令-Set命令
 
 Redis的Set结构与Java中的HashSet类似，可以看做是一个value为null的HashMap。因为也是一个hash表，因此具备与HashSet类似的特征：
@@ -914,6 +992,7 @@ Redis的Set结构与Java中的HashSet类似，可以看做是一个value为null�
 * 查找快
 * 支持交集.并集.差集等功能
 
+例如，社交软件的共同关注（并集）
 **Set类型的常见命令**
 
 * SADD key member ... ：向set中添加一个或多个元素
@@ -924,6 +1003,8 @@ Redis的Set结构与Java中的HashSet类似，可以看做是一个value为null�
 * SINTER key1 key2 ... ：求key1与key2的交集
 * SDIFF key1 key2 ... ：求key1与key2的差集
 * SUNION key1 key2 ..：求key1和key2的并集
+* SPOP key count：随机移除指定数量元素
+* SMOVE source destination member：将指定元素从当前set移动到另一个set
 
 
 
@@ -963,6 +1044,12 @@ Redis的Set结构与Java中的HashSet类似，可以看做是一个value为null�
     
 127.0.0.1:6379> SCARD s1
 (integer) 2
+
+127.0.0.1:6379> SPOP set 2
+1) "3"
+2) "5"
+127.0.0.1:6379>
+
 ```
 
 **案例**
@@ -1041,7 +1128,8 @@ SortedSet的常见命令有：
 - ZCOUNT key min max：统计score值在给定范围内的所有元素的个数
 - ZINCRBY key increment member：让sorted set中的指定元素自增，步长为指定的increment值
 - ZRANGE key min max：按照score排序后，获取指定排名范围内的元素
-- ZRANGEBYSCORE key min max：按照score排序后，获取指定score范围内的元素
+- ZRANGEBYSCORE key min max：按照score排序后，获取指定score范围内的元素 -inf +inf
+- ZREVRANGEBYSCORE：相反操作
 - ZDIFF.ZINTER.ZUNION：求差集.交集.并集
 
 注意：所有的排名默认都是升序，如果要降序则在命令的Z后面添加REV即可，例如：
@@ -1049,8 +1137,59 @@ SortedSet的常见命令有：
 - **升序**获取sorted set 中的指定元素的排名：ZRANK key member
 - **降序**获取sorted set 中的指定元素的排名：ZREVRANK key memeber
 
+### 4.9 Redis命令-Geospatil类型
+推算地理位置信息，两地之间的距离，方圆几里的人
+- [官方文档](https://www.redis.net.cn/order/3685.html)
+
+**Note**
+```bash 
+GEOADD
+两极无法直接添加，一般会下载城市数据，通过客户端程序添加数据
+有效的经度从-180度到180度。
+有效的纬度从-85.05112878度到85.05112878度。
+当坐标位置超出上述指定范围时，该命令将会返回一个错误。
+
+GEODIST
+如果两个位置之间的其中一个不存在， 那么命令返回空值。
+指定单位的参数 unit 必须是以下单位的其中一个：
+m 表示单位为米。
+km 表示单位为千米。
+mi 表示单位为英里。
+ft 表示单位为英尺。
+
+```
+Geospatil的常见命令有：
+
+- GEOADD：将指定的地理空间位置（纬度、经度、名称）添加到指定的key中
+- GEOPOS：从key里返回所有给定位置元素的位置（经度和纬度）
+- GEODIST：返回两个给定位置之间的距离
+- GEORADIUS：以给定的经纬度为中心， 找出某一半径内的元素
+- GEORADIUSBYMEMBER：找出位于指定范围内的元素，中心点是由给定的位置元素决定，以成员为中心
+- GEOHASH：返回一个或多个位置元素的 Geohash 表示，该命令将经纬度返回11个字符的Geohash字符串，字符串越相似，距离越近
 
 
+> ***==GEO 的 实现原理其实就是 ZSET，可以用 ZSET 相关命令操作 GEO==***
+
+获取附近的人的定位，通过半径来查
+
+
+### 4.9 Redis命令-HyperLogLog类型
+Redis 2.8.9 版本就更新了Hyperloglog数据结构!
+Redis Hyperloglog基数统计的算法!
+优点︰占用的内存是固定，2^64不同的元素的基数，只需要废12KB内存!
+==**0.81%的错误率**==
+- Pfadd：添加指定元素到 HyperLogLog 中
+- Pfcount：返回给定 HyperLogLog 的基数估算值
+- Pgmerge：将多个 HyperLogLog 合并为一个 HyperLogLog
+
+### 4.9 Redis命令-Bitmaps类型
+统计用户信息，两个状态的，都可以使用Bitmaps
+Bitmaps位图，只有两个状态，用二进制位 0 1 保存 
+
+
+- SETBIT
+- GETBIT
+- BITCOUNT
 ## 5.Redis的Java客户端-Jedis
 
 在Redis官网中提供了各种语言的客户端，地址：https://redis.io/docs/clients/
