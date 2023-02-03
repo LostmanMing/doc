@@ -52,6 +52,8 @@
     - [6.3 StringRedisTemplate](#63-stringredistemplate)
     - [6.4 Hash结构操作](#64-hash结构操作)
   - [7.Redis事务](#7redis事务)
+  - [8.redis.conf](#8redisconf)
+  - [8.Redis 持久化](#8redis-持久化)
 
 ## 1.Redis简单介绍
 Redis是一个开源的，内存中的数据结构存储系统，它可以用作==数据库==、==缓存==和==消息中间件==MQ。它支持多种类型的数据结构，如字符串（string），散列（hash），列表（lists），集合（sets），有序集合（sorted sets）与范围查询，bitmaps，hyperloglogs和地理空间（geospatial）索引半径查询。Redis内置了复制（replication）,LUA脚本，LRU驱动事件，事务和不同级别的磁盘持久化，并通过Redis哨兵（Sentinel）和自动分区（Cluster）提高高可用性。 
@@ -1812,3 +1814,133 @@ QUEUED
 # 事务执行后会自动解锁
 (nil)
 ```
+
+## 8.redis.conf
+```bash
+1. 包含，可以将多个redis.conf合并
+# include /path/to/local.conf
+# include /path/to/other.conf
+# include /path/to/fragments/*.conf
+
+2. 网络
+bind 127.0.0.1 -::1   # 绑定的ip
+protected-mode no     # 保护模式
+port 6379             # 端口号设置
+
+3. 通用
+daemonize no           # 以守护进程的方式运行，默认是no，使用docker时用no，否则会和docker run -d 冲突
+/pidfile /var/run/redis_6379.pid # 以后台守护的方式运行，需要指定一个pid文件
+
+# 日志
+# Specify the server verbosity level.
+# This can be one of:
+# debug (a lot of information, useful for development/testing)
+# verbose (many rarely useful info, but not a mess like the debug level)
+# notice (moderately verbose, what you want in production probably)
+# warning (only very important / critical messages are logged)
+loglevel notice
+
+logfile ""     # 日志的文件位置
+
+databases 16    # 数据库数量，默认16个
+
+always-show-logo no # 是否总是显示logo
+
+4. 快照
+持久化，在规定时间内，执行了多少次操作，则会持久化  .rdb .aof
+redis是内存数据库，如果没有持久化，数据断电及失！
+
+save 900 1  # 900s内，如果至少1个key被修改，进行持久化
+save 300 10 # 300s内，如果至少10个key被修改，进行持久化
+save 60 10000 # 60s内，如果至少10000个key被修改，进行持久化
+
+stop-writes-on-bgsave-error yes   # 持久化出错，是否还要继续工作
+
+rdbcompression yes  # 是否压缩 rbd 文件，需要消耗一些cpu资源
+
+rdbchecksum yes    # 保存 rdb 文件时，进行错误的检查校验
+
+dir ./       # 持久化生成的目录，默认在当前目录下
+
+5. 复制
+
+
+6. 安全
+requirepass foobared     # 设置密码
+也可以在命令行设置：
+127.0.0.1:6379> config set requirepass root  # 设置密码
+OK
+127.0.0.1:6379> auth root    # 登陆认证
+OK
+127.0.0.1:6379> config get requirepass    # 获取redis密码
+1) "requirepass"
+2) "root"
+
+7. 客户端
+maxclients 10000  # 限制最多有10000个客户端连接
+
+8. 内存
+maxmemory <bytes>   # redis最大内存容量
+
+maxmemory-policy noeviction   # 内存满了的处理策略
+    1. volatile-lru:从已设置过期时间的内存数据集中挑选最近最少使用的数据 淘汰；
+    2. volatile-ttl: 从已设置过期时间的内存数据集中挑选即将过期的数据 淘汰；
+    3. volatile-random:从已设置过期时间的内存数据集中任意挑选数据 淘汰；
+    4. allkeys-lru:从内存数据集中挑选最近最少使用的数据 淘汰；
+    5. allkeys-random:从数据集中任意挑选数据 淘汰；
+    6. no-enviction(驱逐)：禁止驱逐数据。（默认淘汰策略。当redis内存数据达到maxmemory，在该策略下，直接返回OOM错误）；
+9. APPEND ONLY 模式 aod配置
+appendonly no   # 默认不开启 aof 模式，使用 rdb 模式，大部分情况 rdb 够用
+
+appendfilename "appendonly.aof"   # 持久化文件的名字
+
+
+# appendfsync always       # 每次修改都会 sync，消耗性能
+appendfsync everysec       # 每秒执行一次 sync，可能会丢失数据
+# appendfsync no           # 不执行 snyc，这个时候操作系统自己同步数据，速度最快 
+```
+## 8.Redis 持久化
+1. RDB持久化
+    RDB (==R==edis ==D==ata==B==ase)
+
+    > 生成rdb文件
+
+    在 redis.conf中配置rdb持久化规则。满足条件会保存一个dump.rdb文件
+    几种触发持久化的方式。
+    - save 的规则满足的情况下，会自动触发rdb规则
+    - 执行 `flushall` 命令，也会触发rdb规则
+    - 退出redis，也会生成rdb文件
+
+    > 恢复 rdb 文件
+    - 只需要将 rdb 文件放在 redis 启动目录下，redis 启动时会自动检查 dump.rdb 并恢复其中的数据。
+    - 查看需要存在的位置
+        ```bash
+        127.0.0.1:6379> config get dir
+        1) "dir"
+        2) "/data"   # 如果这个目录存在 dump.rdb 文件，就会自动加载恢复其中的数据
+        ```
+    **优点**
+        适合大规模的数据恢复！
+        对数据完整性不高！
+    **缺点**
+        需要一定耳朵时间间隔进行操作，如果redis意外宕机，最后一次修改的数据就没有了。
+        fork进程的时候，需要一定的内存空间，rdb是单独开了一个子进程fork父进程的数据。 
+
+3. AOF持久化
+    AOF(==A==ppend ==O==nly==F==ile)
+    将我们的所有命令都记录下来，history，恢复的时候就把文件里的所有内容执行一遍。
+    aof 保存 `appendonly.aof` 文件。
+    > 使用方法
+
+    - 在 redis.conf 中修改 appendonly 规则 并开启 appendonly 选项
+    - 重启即可生效
+    - 如果aof文件损坏，redis不能正常启动，可以修复aof文件
+        `redis-check-aof --fix`
+
+    **优点**
+        每一次修改都同步，文件的完整性会更好。
+        每秒同步一次，可能会丢失一秒数据。
+        从不同步，效率最高。
+    **缺点**
+        相对于数据文件来说，aof远大于rdb，修复速度也比rdb慢。
+        aof运行效率也比rdb慢，所以redis默认配置是rdb，而不是aof
