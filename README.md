@@ -23,3 +23,5 @@
 ## 命令 🏜️
 > 实时查看文件尾部输出的日志
     `tail -f file`
+    docker :
+    `sudo docker logs -f --tail 20 sentinel_1`
