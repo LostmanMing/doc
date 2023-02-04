@@ -1,59 +1,66 @@
 # 基础篇Redis
- [官网查命令](https://www.redis.net.cn/order/)
+ - [官网查命令](https://www.redis.net.cn/order/)
+ - [b站狂神说 redis](https://www.bilibili.com/video/BV1S54y1R7SB?p=1&vd_source=41cf0bf8fd5d0fd2788aa7ff7dd66abc)
+ - [官网各种redis客户端](https://redis.io/docs/clients/)
+ - [官网最新版配置文件地址/redis.conf/sentinel.conf](http://download.redis.io/redis-stable/)
+
 # 目录
 - [基础篇Redis](#基础篇redis)
 - [目录](#目录)
   - [1.Redis简单介绍](#1redis简单介绍)
-  - [2.课程目录](#2课程目录)
-  - [3.初始Redis](#3初始redis)
-    - [3.1.认识NoSQL](#31认识nosql)
-      - [3.1.1.结构化与非结构化](#311结构化与非结构化)
-      - [3.1.2.关联和非关联](#312关联和非关联)
-      - [3.1.3.查询方式](#313查询方式)
-      - [3.1.4.事务](#314事务)
-      - [3.1.5.总结](#315总结)
-    - [3.2.认识Redis](#32认识redis)
-    - [3.3.安装Redis](#33安装redis)
-      - [3.3.1.依赖库](#331依赖库)
-      - [3.3.2.上传安装包并解压](#332上传安装包并解压)
-      - [3.3.3.启动](#333启动)
-      - [3.3.4.默认启动](#334默认启动)
-      - [3.3.5.指定配置启动](#335指定配置启动)
-      - [3.3.6.开机自启](#336开机自启)
-      - [3.3.6.docker 启动redis](#336docker-启动redis)
-    - [3.4.Redis桌面客户端](#34redis桌面客户端)
-      - [3.4.1.Redis命令行客户端](#341redis命令行客户端)
-      - [3.4.2.图形化桌面客户端](#342图形化桌面客户端)
-      - [3.4.3.安装](#343安装)
-      - [3.4.4.建立连接](#344建立连接)
-  - [4.Redis常见命令](#4redis常见命令)
-    - [4.1 Redis数据结构介绍](#41-redis数据结构介绍)
-    - [4.2 Redis 通用命令](#42-redis-通用命令)
-    - [4.3 Redis命令-String命令](#43-redis命令-string命令)
-    - [4.4 Redis命令-Key的层级结构](#44-redis命令-key的层级结构)
-    - [4.5 Redis命令-Hash命令](#45-redis命令-hash命令)
-    - [4.6 Redis命令-List命令](#46-redis命令-list命令)
-    - [4.7 Redis命令-Set命令](#47-redis命令-set命令)
-    - [4.8 Redis命令-SortedSet类型](#48-redis命令-sortedset类型)
-    - [4.9 Redis命令-Geospatil类型](#49-redis命令-geospatil类型)
-    - [4.9 Redis命令-HyperLogLog类型](#49-redis命令-hyperloglog类型)
-    - [4.9 Redis命令-Bitmap类型](#49-redis命令-bitmap类型)
-  - [5.Redis的Java客户端-Jedis](#5redis的java客户端-jedis)
-    - [5.1 Jedis快速入门](#51-jedis快速入门)
-    - [5.2 Jedis连接池](#52-jedis连接池)
-      - [5.2.1.创建Jedis的连接池](#521创建jedis的连接池)
-      - [5.2.2.改造原始代码](#522改造原始代码)
-  - [6.Redis的Java客户端-SpringDataRedis](#6redis的java客户端-springdataredis)
-    - [6.1.快速入门](#61快速入门)
-      - [6.1.1.导入pom坐标](#611导入pom坐标)
-      - [6.1.2 .配置文件](#612-配置文件)
-      - [6.1.3.测试代码](#613测试代码)
-    - [6.2 .数据序列化器](#62-数据序列化器)
-    - [6.3 StringRedisTemplate](#63-stringredistemplate)
-    - [6.4 Hash结构操作](#64-hash结构操作)
-  - [7.Redis事务](#7redis事务)
-  - [8.redis.conf](#8redisconf)
+  - [2.初始Redis](#2初始redis)
+    - [2.1.认识NoSQL](#21认识nosql)
+      - [2.1.1.结构化与非结构化](#211结构化与非结构化)
+      - [2.1.2.关联和非关联](#212关联和非关联)
+      - [2.1.3.查询方式](#213查询方式)
+      - [2.1.4.事务](#214事务)
+      - [2.1.5.总结](#215总结)
+    - [2.2.认识Redis](#22认识redis)
+    - [2.3.安装Redis](#23安装redis)
+      - [2.3.1.依赖库](#231依赖库)
+      - [2.3.2.上传安装包并解压](#232上传安装包并解压)
+      - [2.3.3.启动](#233启动)
+      - [2.3.4.默认启动](#234默认启动)
+      - [2.3.5.指定配置启动](#235指定配置启动)
+      - [2.3.6.开机自启](#236开机自启)
+      - [2.3.6.docker 启动redis](#236docker-启动redis)
+    - [2.4.Redis桌面客户端](#24redis桌面客户端)
+      - [2.4.1.Redis命令行客户端](#241redis命令行客户端)
+      - [2.4.2.图形化桌面客户端](#242图形化桌面客户端)
+      - [2.4.3.安装](#243安装)
+      - [2.4.4.建立连接](#244建立连接)
+  - [3.Redis常见命令](#3redis常见命令)
+    - [3.1 Redis数据结构介绍](#31-redis数据结构介绍)
+    - [3.2 Redis 通用命令](#32-redis-通用命令)
+    - [3.3 Redis命令-String命令](#33-redis命令-string命令)
+    - [3.4 Redis命令-Key的层级结构](#34-redis命令-key的层级结构)
+    - [3.5 Redis命令-Hash命令](#35-redis命令-hash命令)
+    - [3.6 Redis命令-List命令](#36-redis命令-list命令)
+    - [3.7 Redis命令-Set命令](#37-redis命令-set命令)
+    - [3.8 Redis命令-SortedSet类型](#38-redis命令-sortedset类型)
+    - [3.9 Redis命令-Geospatil类型](#39-redis命令-geospatil类型)
+    - [3.10 Redis命令-HyperLogLog类型](#310-redis命令-hyperloglog类型)
+    - [3.11 Redis命令-Bitmap类型](#311-redis命令-bitmap类型)
+  - [4.Redis的Java客户端-Jedis](#4redis的java客户端-jedis)
+    - [4.1 Jedis快速入门](#41-jedis快速入门)
+    - [4.2 Jedis连接池](#42-jedis连接池)
+      - [4.2.1.创建Jedis的连接池](#421创建jedis的连接池)
+      - [4.2.2.改造原始代码](#422改造原始代码)
+  - [5.Redis的Java客户端-SpringDataRedis](#5redis的java客户端-springdataredis)
+    - [5.1.快速入门](#51快速入门)
+      - [5.1.1.导入pom坐标](#511导入pom坐标)
+      - [5.1.2 .配置文件](#512-配置文件)
+      - [5.1.3.测试代码](#513测试代码)
+    - [5.2 .数据序列化器](#52-数据序列化器)
+    - [5.3 StringRedisTemplate](#53-stringredistemplate)
+    - [5.4 Hash结构操作](#54-hash结构操作)
+  - [6.Redis事务](#6redis事务)
+  - [7.redis.conf](#7redisconf)
   - [8.Redis 持久化](#8redis-持久化)
+  - [9.Redis 订阅](#9redis-订阅)
+  - [10.Redis 主从复制](#10redis-主从复制)
+  - [11.Redis 哨兵模式](#11redis-哨兵模式)
+  - [12.Redis 缓存穿透与雪崩](#12redis-缓存穿透与雪崩)
 
 ## 1.Redis简单介绍
 Redis是一个开源的，内存中的数据结构存储系统，它可以用作==数据库==、==缓存==和==消息中间件==MQ。它支持多种类型的数据结构，如字符串（string），散列（hash），列表（lists），集合（sets），有序集合（sorted sets）与范围查询，bitmaps，hyperloglogs和地理空间（geospatial）索引半径查询。Redis内置了复制（replication）,LUA脚本，LRU驱动事件，事务和不同级别的磁盘持久化，并通过Redis哨兵（Sentinel）和自动分区（Cluster）提高高可用性。 
@@ -71,31 +78,13 @@ Redis是一种键值型的NoSql数据库，这里有两个关键字：
 
 对于存储的数据，没有类似Mysql那么严格的约束，比如唯一性，是否可以为null等等，所以我们把这种松散结构的数据库，称之为NoSQL数据库。
 
+## 2.初始Redis
 
-
-## 2.课程目录
-
->- 初始Redis
->    - 认识NoSQL
->    - 认识Redis
->    - 安装Redis
->- Redis常见命令
->    - 5种常见数据结构
->    - 通用命令
->    - 不同数据结构的操作命令
->- Redis的Java客户端
->    - Jedis客户端
->    - SpringDataRedis客户端
-
-
-
-## 3.初始Redis
-
-### 3.1.认识NoSQL
+### 2.1.认识NoSQL
 
 **NoSql**可以翻译做Not Only Sql（不仅仅是SQL），或者是No Sql（非Sql的）数据库。是相对于传统关系型数据库而言，有很大差异的一种特殊的数据库，因此也称之为**非关系型数据库**。
 
-#### 3.1.1.结构化与非结构化
+#### 2.1.1.结构化与非结构化
 
 传统关系型数据库是结构化数据，每一张表都有严格的约束信息：字段名.字段数据类型.字段约束等等信息，插入的数据必须遵守这些约束：
 ![](assets/4tUgFo6.png)
@@ -111,7 +100,7 @@ Redis是一种键值型的NoSql数据库，这里有两个关键字：
 ![](assets/zBnKxWf.png)
 
 
-#### 3.1.2.关联和非关联
+#### 2.1.2.关联和非关联
 
 传统数据库的表与表之间往往存在关联，例如==外键==
 ![](assets/tXYSl5x.png)
@@ -143,7 +132,7 @@ Redis是一种键值型的NoSql数据库，这里有两个关键字：
 
 
 
-#### 3.1.3.查询方式
+#### 2.1.3.查询方式
 
 传统关系型数据库会基于Sql语句做查询，语法有统一标准；
 
@@ -151,7 +140,7 @@ Redis是一种键值型的NoSql数据库，这里有两个关键字：
 ![](assets/AzaHOTF.png)
 
 
-#### 3.1.4.事务
+#### 2.1.4.事务
 
 传统关系型数据库能满足事务ACID的原则。
 ![](assets/J1MqOJM.png)
@@ -161,7 +150,7 @@ Redis是一种键值型的NoSql数据库，这里有两个关键字：
 
 
 
-#### 3.1.5.总结
+#### 2.1.5.总结
 
 除了上述四点以外，在存储方式.扩展性.查询性能上关系型与非关系型也都有着显著差异，总结如下：
 ![](assets/kZP40dQ.png)
@@ -175,7 +164,7 @@ Redis是一种键值型的NoSql数据库，这里有两个关键字：
   * 非关系型数据库可以将数据拆分，存储在不同机器上，可以保存海量数据，解决内存大小有限的问题。称为水平扩展。
   * 关系型数据库因为表之间存在关联关系，如果做水平扩展会给数据查询带来很多麻烦
 
-### 3.2.认识Redis
+### 2.2.认识Redis
 
 Redis诞生于2009年全称是**Re**mote  **D**ictionary **S**erver 远程词典服务器，是一个基于内存的键值型NoSQL数据库。
 
@@ -192,13 +181,13 @@ Redis诞生于2009年全称是**Re**mote  **D**ictionary **S**erver 远程词典
 
 Redis的官方网站地址：https://redis.io/
 
-### 3.3.安装Redis
+### 2.3.安装Redis
 
 大多数企业都是基于Linux服务器来部署项目，而且Redis官方也没有提供Windows版本的安装包。因此课程中我们会基于Linux系统来安装Redis.
 
 此处选择的Linux版本为CentOS 7.
 
-#### 3.3.1.依赖库
+#### 2.3.1.依赖库
 
 Redis是基于C语言编写的，因此首先需要安装Redis所需要的gcc依赖：
 
@@ -206,7 +195,7 @@ Redis是基于C语言编写的，因此首先需要安装Redis所需要的gcc依
 sudo apt install -y gcc tcl
 ```
 
-#### 3.3.2.上传安装包并解压
+#### 2.3.2.上传安装包并解压
 
 将Redis安装包上传到虚拟机的任意目录：
 
@@ -235,7 +224,7 @@ make && make install
 - redis-server：是redis的服务端启动脚本
 - redis-sentinel：是redis的哨兵启动脚本
 - redis-benchmark：是redis的性能测试脚本
-#### 3.3.3.启动
+#### 2.3.3.启动
 
 redis的启动方式有很多种，例如：
 
@@ -243,7 +232,7 @@ redis的启动方式有很多种，例如：
 - 指定配置启动
 - 开机自启
 
-#### 3.3.4.默认启动
+#### 2.3.4.默认启动
 
 安装完成后，在任意目录输入redis-server命令即可启动Redis：
 
@@ -254,7 +243,7 @@ redis-server
 
 这种启动属于`前台启动`，会阻塞整个会话窗口，窗口关闭或者按下`CTRL + C`则Redis停止。不推荐使用。
 
-#### 3.3.5.指定配置启动
+#### 2.3.5.指定配置启动
 
 如果要让Redis以`后台`方式启动，则必须修改Redis配置文件，就在我们之前解压的redis安装包下（`/usr/local/src/redis-6.2.6`），名字叫redis.conf：
 
@@ -311,7 +300,7 @@ redis-cli -u 123321 shutdown
 
 
 
-#### 3.3.6.开机自启
+#### 2.3.6.开机自启
 
 我们也可以通过配置来实现开机自启。
 
@@ -363,7 +352,7 @@ systemctl status redis
 ```sh
 systemctl enable redis
 ```
-#### 3.3.6.docker 启动redis
+#### 2.3.6.docker 启动redis
 redis c++客户端安装：
 ```bash
     # 安装 hiredis
@@ -416,7 +405,7 @@ docker 下 redis 安装：
     redis++ 编译时 需要链接 lhiredis lredis++ pthread 库
 ```
 
-### 3.4.Redis桌面客户端
+### 2.4.Redis桌面客户端
 
 安装完成Redis，我们就可以操作Redis，实现数据的CRUD了。这需要用到Redis客户端，包括：
 
@@ -424,7 +413,7 @@ docker 下 redis 安装：
 - 图形化桌面客户端
 - 编程客户端
 
-#### 3.4.1.Redis命令行客户端
+#### 2.4.1.Redis命令行客户端
 
 Redis安装完成后就自带了命令行客户端：redis-cli，使用方式如下：
 
@@ -448,7 +437,7 @@ redis-cli [options] [commonds]
 
 
 
-#### 3.4.2.图形化桌面客户端
+#### 2.4.2.图形化桌面客户端
 
 GitHub上的大神编写了Redis的图形化桌面客户端，地址：https://github.com/uglide/RedisDesktopManager
 
@@ -460,7 +449,7 @@ GitHub上的大神编写了Redis的图形化桌面客户端，地址：https://g
 
 
 
-#### 3.4.3.安装
+#### 2.4.3.安装
 
 官网下载Redis的图形化桌面客户端；
 
@@ -473,7 +462,7 @@ GitHub上的大神编写了Redis的图形化桌面客户端，地址：https://g
 双击即可运行。
 ![](assets/6hUqslY.png)
 
-#### 3.4.4.建立连接
+#### 2.4.4.建立连接
 
 点击左上角的`连接到Redis服务器`按钮；
 ![](assets/9qTGyoN.png)
@@ -496,15 +485,15 @@ Redis默认有16个仓库，编号从0至15.  通过配置文件可以设置仓�
 select 0
 ```
 
-## 4.Redis常见命令
+## 3.Redis常见命令
 
-### 4.1 Redis数据结构介绍
+### 3.1 Redis数据结构介绍
 
 Redis是一个key-value的数据库，key一般是String类型，不过value的类型多种多样：
 
 ![1652887393157](assets/1652887393157.png)
 
-**贴心小建议：命令不要死记，学会查询就好啦**
+**Note：命令不要死记，学会查询就好**
 
 Redis为了方便我们学习，将操作不同数据类型的命令也做了分组，在官网（ https://redis.io/commands ）可以查看到不同的命令：
 
@@ -514,7 +503,7 @@ Redis为了方便我们学习，将操作不同数据类型的命令也做了分
 
 ![1652887748279](assets/1652887748279.png)
 
-### 4.2 Redis 通用命令
+### 3.2 Redis 通用命令
 
 通用指令是部分数据类型的，都可以使用的指令，常见的有：
 
@@ -634,7 +623,7 @@ OK
 
 
 
-### 4.3 Redis命令-String命令
+### 3.3 Redis命令-String命令
 
 String类型，也就是字符串类型，是Redis中最简单的存储类型。
 
@@ -768,7 +757,7 @@ OK
 
 
 
-### 4.4 Redis命令-Key的层级结构
+### 3.4 Redis命令-Key的层级结构
 
 Redis没有类似MySQL中的Table的概念，我们该如何区分不同类型的key呢？
 
@@ -801,7 +790,7 @@ Redis的key允许有多个单词形成层级结构，多个单词之间用':'隔
 
 
 
-### 4.5 Redis命令-Hash命令
+### 3.5 Redis命令-Hash命令
 
 Hash类型，也叫散列，其value是一个无序字典，类似于Java中的HashMap结构。
 
@@ -918,7 +907,7 @@ OK
 6) "woman"
 ```
 
-### 4.6 Redis命令-List命令
+### 3.6 Redis命令-List命令
 
 Redis中的List类型与Java中的LinkedList类似，可以看做是一个双向链表结构。既可以支持正向检索和也可以支持反向检索。
 
@@ -986,7 +975,7 @@ Redis中的List类型与Java中的LinkedList类似，可以看做是一个双向
 2) "my"
 3) "hello"
 ```
-### 4.7 Redis命令-Set命令
+### 3.7 Redis命令-Set命令
 
 Redis的Set结构与Java中的HashSet类似，可以看做是一个value为null的HashMap。因为也是一个hash表，因此具备与HashSet类似的特征：
 
@@ -1107,7 +1096,7 @@ Redis的Set结构与Java中的HashSet类似，可以看做是一个value为null�
 2) "wangwu"
 ```
 
-### 4.8 Redis命令-SortedSet类型
+### 3.8 Redis命令-SortedSet类型
 
 Redis的SortedSet是一个可排序的set集合，与Java中的TreeSet有些类似，但底层数据结构却差别很大。SortedSet中的每一个元素都带有一个score属性，可以基于score属性对元素排序，底层的实现是一个跳表（SkipList）加 hash表。
 
@@ -1140,7 +1129,7 @@ SortedSet的常见命令有：
 - **升序**获取sorted set 中的指定元素的排名：ZRANK key member
 - **降序**获取sorted set 中的指定元素的排名：ZREVRANK key memeber
 
-### 4.9 Redis命令-Geospatil类型
+### 3.9 Redis命令-Geospatil类型
 推算地理位置信息，两地之间的距离，方圆几里的人
 - [官方文档](https://www.redis.net.cn/order/3685.html)
 
@@ -1176,7 +1165,7 @@ Geospatil的常见命令有：
 获取附近的人的定位，通过半径来查
 
 
-### 4.9 Redis命令-HyperLogLog类型
+### 3.10 Redis命令-HyperLogLog类型
 Redis 2.8.9 版本就更新了Hyperloglog数据结构!
 Redis Hyperloglog基数统计的算法!
 优点︰占用的内存是固定，2^64不同的元素的基数，只需要废12KB内存!
@@ -1185,7 +1174,7 @@ Redis Hyperloglog基数统计的算法!
 - Pfcount：返回给定 HyperLogLog 的基数估算值
 - Pgmerge：将多个 HyperLogLog 合并为一个 HyperLogLog
 
-### 4.9 Redis命令-Bitmap类型
+### 3.11 Redis命令-Bitmap类型
 统计用户信息，两个状态的，都可以使用Bitmap
 Bitmaps位图，只有两个状态，用二进制位 0 1 保存 
 
@@ -1193,7 +1182,7 @@ Bitmaps位图，只有两个状态，用二进制位 0 1 保存
 - SETBIT
 - GETBIT
 - BITCOUNT
-## 5.Redis的Java客户端-Jedis
+## 4.Redis的Java客户端-Jedis
 
 在Redis官网中提供了各种语言的客户端，地址：https://redis.io/docs/clients/
 
@@ -1210,7 +1199,7 @@ Bitmaps位图，只有两个状态，用二进制位 0 1 保存
 
 
 
-### 5.1 Jedis快速入门
+### 4.1 Jedis快速入门
 
 **入门案例详细步骤**
 
@@ -1305,7 +1294,7 @@ void tearDown() {
 
 
 
-### 5.2 Jedis连接池
+### 4.2 Jedis连接池
 
 Jedis本身是线程不安全的，并且频繁的创建和销毁连接会有性能损耗，因此我们推荐大家使用Jedis连接池代替Jedis的直连方式
 
@@ -1313,7 +1302,7 @@ Jedis本身是线程不安全的，并且频繁的创建和销毁连接会有性
 
 
 
-#### 5.2.1.创建Jedis的连接池
+#### 4.2.1.创建Jedis的连接池
 
 - 
 
@@ -1350,7 +1339,7 @@ public class JedisConnectionFacotry {
 
 
 
-#### 5.2.2.改造原始代码
+#### 4.2.2.改造原始代码
 
 **代码说明:**
 
@@ -1380,7 +1369,7 @@ public class JedisConnectionFacotry {
 
 
 
-## 6.Redis的Java客户端-SpringDataRedis
+## 5.Redis的Java客户端-SpringDataRedis
 
 SpringData是Spring中数据操作的模块，包含对各种数据库的集成，其中对Redis的集成模块就叫做SpringDataRedis，官网地址：https://spring.io/projects/spring-data-redis
 
@@ -1398,11 +1387,11 @@ SpringDataRedis中提供了RedisTemplate工具类，其中封装了各种对Redi
 
 
 
-### 6.1.快速入门
+### 5.1.快速入门
 
 SpringBoot已经提供了对SpringDataRedis的支持，使用非常简单：
 
-#### 6.1.1.导入pom坐标
+#### 5.1.1.导入pom坐标
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1471,7 +1460,7 @@ SpringBoot已经提供了对SpringDataRedis的支持，使用非常简单：
 </project>
 ```
 
-#### 6.1.2 .配置文件
+#### 5.1.2 .配置文件
 
 ```yaml
 spring:
@@ -1487,7 +1476,7 @@ spring:
         max-wait: 100ms #连接等待时间
 ```
 
-#### 6.1.3.测试代码
+#### 5.1.3.测试代码
 
 ```java
 @SpringBootTest
@@ -1517,7 +1506,7 @@ SpringDataRedis的使用步骤：
 
 
 
-### 6.2 .数据序列化器
+### 5.2 .数据序列化器
 
 RedisTemplate可以接收任意Object作为值写入Redis：
 
@@ -1579,7 +1568,7 @@ public class RedisConfig {
 
 
 
-### 6.3 StringRedisTemplate
+### 5.3 StringRedisTemplate
 
 尽管JSON的序列化方式可以满足我们的需求，但依然存在一些问题，如图：
 
@@ -1654,7 +1643,7 @@ RedisTemplate的两种序列化实践方案：
   * 读取Redis时，手动把读取到的JSON反序列化为对象
 
 
-### 6.4 Hash结构操作
+### 5.4 Hash结构操作
 
 在基础篇的最后，咱们对Hash结构操作一下，收一个小尾巴，这个代码咱们就不再解释啦
 
@@ -1679,7 +1668,7 @@ class RedisStringTests {
 }
 ```
 
-## 7.Redis事务
+## 6.Redis事务
 Redis事务的本质：一组命令的集合！一个事务中的所有命令会被序列化，执行过程中按顺序执行
 一次性、顺序性、排他性
 
@@ -1815,7 +1804,7 @@ QUEUED
 (nil)
 ```
 
-## 8.redis.conf
+## 7.redis.conf
 ```bash
 1. 包含，可以将多个redis.conf合并
 # include /path/to/local.conf
@@ -1863,7 +1852,10 @@ rdbchecksum yes    # 保存 rdb 文件时，进行错误的检查校验
 dir ./       # 持久化生成的目录，默认在当前目录下
 
 5. 复制
-
+主库修改log文件名和rdb文件名即可
+从库修改 端口号 pid文件名 log文件名 rdb文件名
+repliction host port  # 主机ip 端口
+masterauth            # 主机密码
 
 6. 安全
 requirepass foobared     # 设置密码
@@ -1944,3 +1936,371 @@ appendfsync everysec       # 每秒执行一次 sync，可能会丢失数据
     **缺点**
         相对于数据文件来说，aof远大于rdb，修复速度也比rdb慢。
         aof运行效率也比rdb慢，所以redis默认配置是rdb，而不是aof
+
+## 9.Redis 订阅
+
+**主要命令**
+- SUBSCRIBE 命令，这个命令可以让我们订阅任意数量的频道
+- PUBLISH 命令，此命令是用来发布消息
+- PSUBSCRIBE命令，此命令用来支持模糊订阅的功能
+- UNSUBSCRIBE命令取消对应客户端的订阅
+
+适用于构建即时通讯应用，如网络聊天室、实时广播、实时提醒
+微信公众号、b站动态
+
+```bash
+# pub端
+127.0.0.1:6379> PUBLISH gmingshuo subscribe        # 发布者向频道发送消息
+(integer) 1
+127.0.0.1:6379> PUBLISH gmingshuo hello,redis
+(integer) 1
+
+# sub端
+127.0.0.1:6379> SUBSCRIBE gmingshuo         # 订阅一个channel
+Reading messages... (press Ctrl-C to quit)
+1) "subscribe"
+2) "gmingshuo"
+3) (integer) 1
+1) "message"         # 消息
+2) "gmingshuo"       # 频道
+3) "subscribe"       # 消息内容
+1) "message"
+2) "gmingshuo"
+3) "hello,redis"
+
+```
+
+
+**实现原理**
+在redisServer结构中的其中一个属性pubsub_channels是用来记录channel和客户端之间的关系，是使用key-->List的数据格式，也就是一个字典
+![](https://pic2.zhimg.com/80/v2-76e3e06285cdeea65abf6877497be3f1_720w.webp)
+
+在我们使用SUBSCRIBE 命令在客户端client10086订阅了channel1 channel2,channel3
+![](https://pic1.zhimg.com/80/v2-ff7c9be3e0e68ce6a2773ae792004b58_720w.webp)
+这就可以看出来执行SUBSCRIBE 命令就是将客户端信息添加到对应的channel对应列表的尾部。
+
+
+## 10.Redis 主从复制
+- **概述**
+    主从复制，是指将一台Redis服务器的数据，复制到其他的Redis服务器。前者称为主节点(master)，后者称为从节点(slave)；==数据的复制是单向的，只能由主节点到从节点==。
+    默认情况下，每台Redis服务器都是主节点；==且一个主节点可以有多个从节点(或没有从节点)，但一个从节点只能有一个主节点==。
+    ![](https://pic4.zhimg.com/80/v2-d38568a3bc4f3ac8703071429ae52023_720w.webp)
+    **主从复制的作用**
+    1. 数据冗余：主从复制实现了数据的热备份，是持久化之外的一种数据冗余方式。
+    2. 故障恢复：当主节点出现问题时，可以由从节点提供服务，实现快速的故障恢复；实际上是一种服务的冗余。
+    3. 负载均衡：在主从复制的基础上，配合读写分离，可以由主节点提供写服务，由从节点提供读服务（即写Redis数据时应用连接主节点，读Redis数据时应用连接从节点），分担服务器负载；尤其是在写少读多的场景下，通过多个从节点分担读负载，可以大大提高Redis服务器的并发量。
+    4. 高可用（集群）基石：除了上述作用以外，主从复制还是哨兵和集群能够实施的基础，因此说主从复制是Redis高可用的基础。
+
+    一般来说，要将 Redis 运用于工程项目中，一台 Redis 是万万不可能的（宕机）：
+    - 从结构上说，单个 Redis 服务器会发生单点故障，并且一台服务器处理所有请求负载，压力较大
+    - 从容量上说，单个 Redis 服务器内存容量有限，就算一台 Redis 服务器内存容量有256G，也不能将所有内存用作 Redis 存储内存，一般来说，单台 Redis 最大使用内存不应超过20G。
+
+- **环境配置**
+    只配置从库，不用配置主库（Redis 默认自己就是主库）
+    ```bash
+    127.0.0.1:6379> info replication
+    # Replication
+    role:master          # 默认 master
+    connected_slaves:0
+    master_failover_state:no-failover
+    master_replid:f38600b1a00a5fcdb5de1795eb83873a32495bd2
+    master_replid2:0000000000000000000000000000000000000000
+    master_repl_offset:0
+    second_repl_offset:-1
+    repl_backlog_active:0
+    repl_backlog_size:1048576
+    repl_backlog_first_byte_offset:0
+    repl_backlog_histlen:0
+    ```
+    主库修改 `log` 文件名和 `dump.rdb` 文件名即可
+    从库修改 `port`、`pid` 文件名、`log` 文件名和`dump.rdb` 文件名
+    启动后查看进程
+    ```bash
+    zhaogming@ubuntu:~/workspace/redis/data$ ps -ef|grep redis
+    999         3598    3526  0 10:31 ?        00:00:04 redis-server *:6379
+    999       110872  110842  0 11:30 ?        00:00:00 redis-server *:6380
+    999       113794  113772  0 11:31 ?        00:00:00 redis-server *:6381
+    zhaogmi+  117500    2122  0 11:33 pts/0    00:00:00 grep --color=auto redis
+    zhaogming@ubuntu:~/workspace/redis/data$
+    ```
+    **一主二从**
+    目前三台redis都是 master，只需要配置从机即可
+    查看主机ip（docker 不能直接用127.0.0.1），通过Docker容器启动的Redis服务器的IP地址是动态的，所以这里要用上述命来获取IP地址
+    ```bash
+    sudo docker inspect redis
+                
+        ...      ...    ...    ...   ...
+                        "Gateway": "172.17.0.1",
+                        "IPAddress": "172.17.0.2",    # 动态分配的ip
+                        "IPPrefixLen": 16,
+                        "IPv6Gateway": "",
+                        "GlobalIPv6Address": "",
+                        "GlobalIPv6PrefixLen": 0,
+                        "MacAddress": "02:42:ac:11:00:02",
+                        "DriverOpts": null
+                    }
+                }
+            }
+        }
+    ]
+
+    ```
+    从机配置
+    ```bash
+    # 从机1
+    127.0.0.1:6380> SLAVEOF 172.17.0.2 6379
+    OK
+    127.0.0.1:6380> info replication
+    # Replication
+    role:slave
+    master_host:127.0.0.1
+    master_port:6379
+    master_link_status:up
+    master_last_io_seconds_ago:1
+    master_sync_in_progress:0
+    slave_read_repl_offset:392
+    slave_repl_offset:392
+    slave_priority:100
+    slave_read_only:1
+    replica_announced:1
+    connected_slaves:0
+    master_failover_state:no-failover
+    master_replid:1007c5db1362b7a56133a6a250070beb1ab3d1b5
+    master_replid2:0000000000000000000000000000000000000000
+    master_repl_offset:392
+    second_repl_offset:-1
+    repl_backlog_active:1
+    repl_backlog_size:1048576
+    repl_backlog_first_byte_offset:351
+    repl_backlog_histlen:42
+
+    # 从机2
+    127.0.0.1:6381> SLAVEOF 172.17.0.2 6379
+    OK
+    127.0.0.1:6381> info replication
+    # Replication
+    role:slave
+    master_host:172.17.0.2
+    master_port:6379
+    master_link_status:up
+    master_last_io_seconds_ago:1
+    master_sync_in_progress:0
+    slave_read_repl_offset:392
+    slave_repl_offset:392
+    slave_priority:100
+    slave_read_only:1
+    replica_announced:1
+    connected_slaves:0
+    master_failover_state:no-failover
+    master_replid:a68cfe4e534c6d3a7a6bbd7fd4b0433e1b21c551
+    master_replid2:0000000000000000000000000000000000000000
+    master_repl_offset:392
+    second_repl_offset:-1
+    repl_backlog_active:1
+    repl_backlog_size:1048576
+    repl_backlog_first_byte_offset:351
+    repl_backlog_histlen:42
+    ```
+    查看主机信息
+    ```bash
+    # Replication
+    role:master
+    connected_slaves:2
+    slave0:ip=172.17.0.3,port=6380,state=online,offset=644,lag=1
+    slave1:ip=172.17.0.4,port=6381,state=online,offset=644,lag=1
+    master_failover_state:no-failover
+    master_replid:a68cfe4e534c6d3a7a6bbd7fd4b0433e1b21c551
+    master_replid2:0000000000000000000000000000000000000000
+    master_repl_offset:644
+    second_repl_offset:-1
+    repl_backlog_active:1
+    repl_backlog_size:1048576
+    repl_backlog_first_byte_offset:1
+    repl_backlog_histlen:644
+    ```
+    上述方法是在命令行配置，只是暂时配置，永久配置可以在redis.conf中配置。
+
+**主从使用**
+- 主机可以写，从机不能写只能读，主机中所有信息和数据，都会被从机保存
+    ```bash
+    127.0.0.1:6380> set k1 v1
+    (error) READONLY You can't write against a read only replica.
+    127.0.0.1:6380>
+    ```
+- 如果使用命令行配置的主从，从机宕机重启会重新变回主机，重新配置回从机，数据会立刻同步
+- 主机宕机，可以手动使用 `slaveof no one `使自己成为主机（哨兵模式可以自动）
+**主从复制原理**
+Redis主从复制可以根据是否是全量分为**全量同步**和**增量同步**
+1. 从服务器连接主服务器，发送 SYNC 同步命令；
+2. 主服务器接收到 SYNC 命名后，开始执行BGSAVE命令生成RDB文件并使用缓冲区记录此后执行的所有写命令；
+3. 主服务器 BGSAVE 执行完后，向所有从服务器发送快照文件，并在发送期间继续记录被执行的写命令；
+4. 从服务器收到快照文件后丢弃所有旧数据，载入收到的快照；
+5. 主服务器快照发送完毕后开始向从服务器发送缓冲区中的写命令；
+6. 从服务器完成对快照的载入，开始接收命令请求，并执行来自主服务器缓冲区的写命令；
+![](https://pic1.zhimg.com/80/v2-741545f34b85facdb84febd573323b6c_720w.webp)
+
+**全量同步**
+Redis 全量复制一般发生在 Slave 初始化阶段，这时 Slave 需要将Master 上的所有数据都复制一份
+
+**增量同步**
+Redis 增量复制是指 Slave 初始化后开始正常工作时主服务器发生的写操作同步到从服务器的过程。 增量复制的过程主要是主服务器每执行一个写命令就会向从服务器发送相同的写命令，从服务器接收并执行收到的写命令。
+
+**Redis主从同步策略**
+主从刚刚连接的时候，进行全量同步；全同步结束后，进行增量同步。当然，如果有需要，slave 在任何时候都可以发起全量同步。redis 策略是，无论如何，首先会尝试进行增量同步，如不成功，要求从机进行全量同步。
+
+## 11.Redis 哨兵模式
+**概述**
+主从切换技术的方法是：**当主服务器宕机后，需要手动把一台从服务器切换为主服务器，这就需要人工干预，费事费力，还会造成一段时间内服务不可用**。这不是一种推荐的方式，更多时候，我们优先考虑==哨兵模式==。
+哨兵模式是一种特殊的模式，首先 Redis 提供了哨兵的命令，哨兵是一个**独立的进程**，作为进程，它会独立运行。其原理是**哨兵通过发送命令，等待 Redis 服务器响应，从而监控运行的多个 Redis 实例**。
+![](https://upload-images.jianshu.io/upload_images/11320039-57a77ca2757d0924.png?imageMogr2/auto-orient/strip|imageView2/2/w/507/format/webp)
+这里的哨兵有两个作用
+
+- 通过发送命令，让Redis服务器返回监控其运行状态，包括主服务器和从服务器。
+
+- 当哨兵监测到master宕机，会自动将 slave 切换成 master，然后通过发布订阅模式通知其他的从服务器，修改配置文件，让它们切换主机。
+
+然而一个哨兵进程对 Redis 服务器进行监控，可能会出现问题，为此，我们可以使用多个哨兵进行监控。各个哨兵之间还会进行监控，这样就形成了多哨兵模式。
+
+用文字描述一下故障切换（failover）的过程。假设主服务器宕机，哨兵1先检测到这个结果，系统并不会马上进行 failover 过程，仅仅是哨兵1主观的认为主服务器不可用，这个现象成为主观下线。当后面的哨兵也检测到主服务器不可用，并且数量达到一定值时，那么哨兵之间就会进行一次投票，投票的结果由一个哨兵发起，进行 failover 操作。切换成功后，就会通过发布订阅模式，让各个哨兵把自己监控的从服务器实现切换主机，这个过程称为客观下线。这样对于客户端而言，一切都是透明的。
+![](https://upload-images.jianshu.io/upload_images/11320039-3f40b17c0412116c.png?imageMogr2/auto-orient/strip|imageView2/2/w/747/format/webp)
+
+**哨兵模式配置**
+1. 配置哨兵配置文件 `sentinel.conf`
+    `wget http://download.redis.io/redis-stable/sentinel.conf`
+    ```bash
+    #监听端口
+    port 26379
+
+    # 修改监控的主redis服务器
+    # sentinel monitor 自定义被监控名称 host port 1
+    sentinel monitor myredis 172.17.0.2 6379 1
+
+    # 修改日志文件的路径
+    logfile "/var/tmp/sentinel.log"
+
+    #超过5秒master还没有连接上，则认为master已经停止
+    sentinel down-after-milliseconds mymaster 5000
+    ```
+    后面的数字1，代表主机挂了哨兵投票选择新的主机，1个或1个以上的哨兵认为主服务器不可用的时候，进行failover操作。
+2. 启动哨兵
+   - Docker 启动命令
+   `docker run --name sentinel1  -v  $PWD/sentinel.conf:/usr/local/etc/redis/sentinel.conf -d --net=host redis redis-sentinel /usr/local/etc/redis/sentinel.conf`
+    - 查看状态
+        ```bash
+        127.0.0.1:26379> info sentinel
+        # Sentinel
+        sentinel_masters:1
+        sentinel_tilt:0
+        sentinel_tilt_since_seconds:-1
+        sentinel_running_scripts:0
+        sentinel_scripts_queue_length:0
+        sentinel_simulate_failure_flags:0
+        master0:name=mymaster,status=ok,address=172.17.0.2:6379,slaves=2,sentinels=1
+        ```
+3. 测试
+    - 将主机 6379 关机
+    `127.0.0.1:6379> SHUTDOWN`
+
+    - 查看哨兵日志
+        `sudo docker logs -f --tail 20 sentinel_1`
+        ```bash
+        1:X 04 Feb 2023 07:31:49.867 # +odown master mymaster 172.17.0.2 6379 #quorum 1/1
+        1:X 04 Feb 2023 07:31:49.867 # +new-epoch 1
+        1:X 04 Feb 2023 07:31:49.867 # +try-failover master mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:49.869 # +vote-for-leader 9c1e9477bfcaa5011c3a8b5ba3193510e2cca312 1
+        1:X 04 Feb 2023 07:31:49.869 # +elected-leader master mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:49.869 # +failover-state-select-slave master mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:49.940 # +selected-slave slave 172.17.0.3:6380 172.17.0.3 6380 @ mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:49.940 * +failover-state-send-slaveof-noone slave 172.17.0.3:6380 172.17.0.3 6380 @ mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:50.031 * +failover-state-wait-promotion slave 172.17.0.3:6380 172.17.0.3 6380 @ mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:50.976 # Could not rename tmp config file (Device or resource busy)
+        1:X 04 Feb 2023 07:31:50.976 # WARNING: Sentinel was not able to save the new configuration on disk!!!: Device or resource busy
+        :X 04 Feb 2023 07:31:50.976 # +promoted-slave slave 172.17.0.3:6380 172.17.0.3 6380 @ mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:50.976 # +failover-state-reconf-slaves master mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:51.034 * +slave-reconf-sent slave 172.17.0.4:6381 172.17.0.4 6381 @ mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:51.977 * +slave-reconf-inprog slave 172.17.0.4:6381 172.17.0.4 6381 @ mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:51.977 * +slave-reconf-done slave 172.17.0.4:6381 172.17.0.4 6381 @ mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:52.029 # +failover-end master mymaster 172.17.0.2 6379
+        1:X 04 Feb 2023 07:31:52.029 # +switch-master mymaster 172.17.0.2 6379 172.17.0.3 6380
+        1:X 04 Feb 2023 07:31:52.030 * +slave slave 172.17.0.4:6381 172.17.0.4 6381 @ mymaster 172.17.0.3 6380
+        1:X 04 Feb 2023 07:31:52.030 * +slave slave 172.17.0.2:6379 172.17.0.2 6379 @ mymaster 172.17.0.3 6380
+        ```
+    - 从日志看出 6380 成为新的 master,查看 6380 info
+        ```bash
+        127.0.0.1:6380> info replication
+        # Replication
+        role:master
+        connected_slaves:1
+        slave0:ip=172.17.0.4,port=6381,state=online,offset=99331,lag=0
+        master_failover_state:no-failover
+        master_replid:e6d47268ca7d01b26e782c41e18471ac9045c5b8
+        master_replid2:a68cfe4e534c6d3a7a6bbd7fd4b0433e1b21c551
+        master_repl_offset:99331
+        second_repl_offset:75464
+        repl_backlog_active:1
+        repl_backlog_size:1048576
+        repl_backlog_first_byte_offset:1
+        repl_backlog_histlen:99331
+        ```
+    - 此时原主机 6379 上线会成为现有主机的从机
+        ```bash
+        127.0.0.1:6379> info replication
+        # Replication
+        role:slave
+        master_host:172.17.0.3
+        master_port:6380
+        master_link_status:up
+        master_last_io_seconds_ago:0
+        master_sync_in_progress:0
+        slave_read_repl_offset:159162
+        slave_repl_offset:159162
+        slave_priority:100
+        slave_read_only:1
+        replica_announced:1
+        connected_slaves:0
+        master_failover_state:no-failover
+        master_replid:e6d47268ca7d01b26e782c41e18471ac9045c5b8
+        master_replid2:0000000000000000000000000000000000000000
+        master_repl_offset:159162
+        second_repl_offset:-1
+        repl_backlog_active:1
+        repl_backlog_size:1048576
+        repl_backlog_first_byte_offset:147427
+        repl_backlog_histlen:11736
+        ```
+        查看哨兵日志
+        ```bash
+        1:X 04 Feb 2023 07:32:22.059 # +sdown slave 172.17.0.2:6379 172.17.0.2 6379 @ mymaster 172.17.0.3 6380
+        1:X 04 Feb 2023 07:49:16.426 # -sdown slave 172.17.0.2:6379 172.17.0.2 6379 @ mymaster 172.17.0.3 6380
+        1:X 04 Feb 2023 07:49:26.361 * +convert-to-slave slave 172.17.0.2:6379 172.17.0.2 6379 @ mymaster 172.17.0.3 6380
+        ```
+
+
+
+## 12.Redis 缓存穿透与雪崩
+1. 缓存穿透
+- 描述
+缓存穿透是指**==缓存和数据库中都没有的数据==**，而用户不断发起请求。由于缓存是不命中时被动写的，并且出于容错考虑，如果从存储层查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到存储层去查询，失去了缓存的意义。
+在流量大时，可能DB就挂掉了，要是有人利用不存在的key频繁攻击我们的应用，这就是漏洞。
+如发起为id为“-1”的数据或id为特别大不存在的数据。这时的用户很可能是攻击者，攻击会导致数据库压力过大。
+- 解决方案
+**==接口层增加校验==**，如用户鉴权校验，id做基础校验，id<=0的直接拦截；**布隆过滤器**
+
+2. 缓存击穿
+- 描述
+缓存击穿是指==缓存中没有但数据库中有的数据==(一般是缓存时间到期)，这时由于并发用户特别多，同时读缓存没读到数据，又同时去数据库去取数据，引起数据库压力瞬间增大，造成过大压力。
+- 解决方案
+  - 设置热点数据永远不过期。
+  - **接口限流与熔断，降级**。重要的接口一定要做好限流策略，防止用户恶意刷接口，同时要降级准备，当接口中的某些 服务  不可用时候，进行熔断，失败快速返回机制。
+  - **布隆过滤器**。bloomfilter就类似于一个hash set，用于快速判某个元素是否存在于集合中，其典型的应用场景就是快速判断一个key是否存在于某容器，不存在就直接返回。布隆过滤器的关键就在于hash算法和容器大小.
+  - 加互斥锁。
+
+
+
+3. 缓存雪崩
+- 描述
+**缓存雪崩**是指缓存中数据大批量到过期时间，而查询数据量巨大，引起数据库压力过大甚至down机。和缓存击穿不同的是，缓存击穿指并发查同一条数据，缓存雪崩是不同数据都过期了，很多数据都查不到从而查数据库。
+- 解决方案
+    - 缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。
+    - 如果缓存数据库是分布式部署，将热点数据均匀分布在不同搞得缓存数据库中。
+    - 设置热点数据永远不过期。
