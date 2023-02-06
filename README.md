@@ -3,6 +3,7 @@
 - 各种格式视频播放 [PotPlayer](http://potplayer.tv/?lang=zh_CN)
 - 视频格式转换 [ffmpeg](https://www.ffmpeg.org/download.html#build-windows)
 - [数据结构可视化网站](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
+- [git学习网站](https://learngitbranching.js.org/?locale=zh_CN)
 ## 文档 ✨
 - [煤矿文档](/documnet/coal_config.md)
 - [win下docker+wsl](documnet/docker_desktop换盘.md)
