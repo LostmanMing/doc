@@ -27,3 +27,6 @@
     `tail -f file`
     docker :
     `sudo docker logs -f --tail 20 sentinel_1`
+
+> github代理，加速访问速度
+    `export https_proxy=192.168.1.103:8889`
