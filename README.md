@@ -23,10 +23,19 @@
 - [煤矿triton dockerfile](file/docker/dockerfile)
 - [煤矿自动启动脚本](file/autostart.sh) 
 ## 命令 🏜️
-> 实时查看文件尾部输出的日志
-    `tail -f file`
+- 实时查看文件尾部输出的日志
+>    `tail -f file`
     docker :
     `sudo docker logs -f --tail 20 sentinel_1`
 
-> github代理，加速访问速度
-    `export https_proxy=192.168.1.103:8889`
+- github代理，加速访问速度  
+[设置代理](https://www.cnblogs.com/xuyaowen/p/linux-cmdline-http-https-tcp-proxy.html)
+>    临时设置代理：
+    `export https_proxy=127.0.0.1:7890`
+    `export http_proxy="127.0.0.1:7890`
+    临时取消代理：
+    unset http_proxy
+    unset https_proxy
+    查看代理：
+    env | grep xxx
+如果想要使代理服务器永久生效，可以修改 /etc/profile文件 ，在profile 中添加或者删除。
