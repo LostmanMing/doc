@@ -16,6 +16,7 @@
   - [**File**](#file)
   - [**Split Screen and Tab**](#split-screen-and-tab)
   - [**Vim Settings**](#vim-settings)
+  - [**常用技巧**](#常用技巧)
 
 
 # **资源**
@@ -156,7 +157,7 @@ Operator `Delete` / `Undo` / `Paste` / `Replace`
 ## **File**
 |Mode|ShortCut|Description|
 |:---:|:---:|:---:|
-|`n`|`gf`|跳转到光标所在文件名，适用于`include`某文件时|
+|`n`|`gf`|跳转到光标所在文件名，适用于`include`某文件时,go to file|
 |`n`|`:e <filename> + <Enter>`|打开名为 filename 的文件，若文件不存在则创建之|
 |`n`|`:Ex + <Enter>`|打开名为 filename 的文件，若文件不存在则创建之|
 |`n`|`:buffer`|查看Vim buffer，即文件历史记录|
@@ -225,6 +226,16 @@ Operator `Delete` / `Undo` / `Paste` / `Replace`
 |`n`|`:set expandtab` | 缩进时将 tab 制表符转换为空格|
 |`n`|`:filetype on` | 开启文件类型检测|
 |`n`|`:syntax on` | 开启语法高亮|
-Prepend "no" to switch an option off:   `:set noic`
+Prepend "`no`" to switch an option off:   `:set noic`
 
 若要永久生效，需要修改 Vim 的一个自动配置文件，一般文件路径是 `~/.vimrc`
+
+
+## **常用技巧**
+- `xp` / `ddp` 交换两个字符、交换两行。
+- `:sh` 临时bash输入终端命令，可用来打开其他vim，`ctrl d` 或 `exit` 返回 vim，目前绑定到`F8`
+- 还可以使用`:terminal` 打开一个内嵌终端。
+- 在 `:` 后输入命令时， `%` 可以代替当前文件名。
+- vim内置的 make 可以调错 `cw` 打开错误窗口 ，如果跳转到其他文件可以直接使用`ctrl o`或者`ctrl i `调回来。
+- `:ls` 显示的缓冲区，文件名前 `#` 代表 `ctrl o `能跳转过去的上一个文件，`%a` 代表当前正在编辑的文件，`b + n` 文件名前的序号可以跳转到那个文件 。
+- `bp` 绑定到 `F2`,`bn` 绑定到 `F3`,`NERDtree`插件打开目录
