@@ -4,6 +4,7 @@
 - 视频格式转换 [ffmpeg](https://www.ffmpeg.org/download.html#build-windows)
 - [数据结构可视化网站](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
 - [git学习网站](https://learngitbranching.js.org/?locale=zh_CN)
+- [git创建远程仓库](https://www.cnblogs.com/yanqingyang/p/9839664.html)
 - [linux命令查询](https://wangchujiang.com/linux-command/)
 - [cmake 学习网站](https://sfumecjf.github.io/cmake-examples-Chinese/)
 ## 文档 ✨
