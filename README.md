@@ -46,3 +46,11 @@
     env | grep xxx
     # 如果想要使代理服务器永久生效，可以修改 /etc/profile文件 ，在profile 中添加或者删除。
     ```
+- 将pip3环境中的包，添加到conda环境中
+    ```bash
+    # 在pip3环境中使用以下命令查看torch包的安装路径
+    pip3 show torch
+    #在输出中找到Location字段，记录下路径
+    #在conda环境中使用以下命令添加路径到PYTHONPATH环境变量：
+    export PYTHONPATH=$PYTHONPATH:~/.local/lib/python3.8/dist-packages
+    ```
