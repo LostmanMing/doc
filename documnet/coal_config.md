@@ -3,7 +3,7 @@
 ```bash
 curl -fsSL https://get.docker.com -o get-docker.sh
 
-sudo sh get-docker.sh --mirror=Aliyun
+sudo sh get-docker.sh --mirror=Aliyun       # 一键安装 docker
 
 sudo systemctl start docker //启动docker
 
@@ -38,23 +38,25 @@ docker run -it --net=host --gpus=all -v /newdisk:/home/ --restart=always --name 
 
     - `git clone https://github.com/wang-xinyu/tensorrtx.git`   
     - `git checkout yolov5-v6.0`
-
-3. 在/tensorrtx/yolov5/yolov5.cpp中  
-   1. 修改第15行 `BATCH_SIZE` 为 16
-   2. 在第100行添加：   
+3. 将 `/tensorrtx/yolov5/gen_wts.py` 移动到YOLOv5-6.0项目中，因为 tensorrtx 缺少 `utils`
+   - 激活 conda 环境
+   - `python gen_wts.py -w .pt权重文件 -o .wts输出文件`
+4. 在/tensorrtx/yolov5/yolov5.cpp中  
+   -  修改第 15 行 `BATCH_SIZE` 为 16
+   -  在第 100 行添加：     
     ```cpp
     auto optimizer = builder->createOptimizationProfile();  
     optimizer->setDimensions("data",OptProfileSelector::kOPT,Dims4{16,3,640,640});
     ```
-4. 在 tensorrtx/yolov5/yololayer.h中  
-   修改20行 `CLASS_NUM` 为 1（转face时） 2 (转helmet和mask时)
-5. /tensorrtx/yolov5/目录下创建build文件夹  
-   - 将需要转换的wts文件cp到build中
+5. 在 `tensorrtx/yolov5/yololayer.h` 中  
+   修改20行 `CLASS_NUM` 为 1（转face时） 2 (转helmet和mask时) **取决于你数据集的类别**
+6. `/tensorrtx/yolov5/` 目录下创建 `build` 文件夹  
+   - 将需要转换的 `.wts` 文件 `cp` 到 `build` 中
    - `cmake .. && make -j8`  
    - 模型转换操作，以人脸检测为例：  
     `./yolov5 -s yolov5s-face.wts yolov5s.face.engine s `
-6. 将生成的engine文件改名为model.plan并放到对应模型的1目录下
-7. 在/opt目录下  
+7. 将生成的engine文件改名为model.plan并放到对应模型的1目录下
+8. 在 `/opt` 目录下  
     ```bash
     git clone https://github.com/PaddlePaddlePaddleDetection.git
 
@@ -64,7 +66,7 @@ docker run -it --net=host --gpus=all -v /newdisk:/home/ --restart=always --name 
 
     pip install onnx onnxruntime onnxruntime-gpu  nvidia-pyindex onnx-graphsurgeon paddle2onnx -i https://mirror.baidu.com/pypi/simple
 
-    #行人检测模型转换
+    #行人检测模型转换   --以弃用
     python tools/export_model.py -c configs/pphuman/ppyoloe_crn_s_36e_pphuman.yml -o weights=https://paddledet.bj.bcebos.com/models/ppyoloe_crn_s_36e_crowdhuman.pdparams trt=True exclude_nms=True
 
     python deploy/third_engine/demo_onnx_trt/onnx_custom.py --onnx_file=output_inference/ppyoloe_crn_s_36e_pphuman/ppyoloe_crn_s_36e_pphuman.onnx --model_dir=output_inference/ppyoloe_crn_s_36e_pphuman/ --opset_version=11
@@ -119,6 +121,6 @@ vim /etc/fstab
 
 ### 测试ssh能否连上docker内
 
-- `ssh root@172.0.0.1 -p 36022`
+- `ssh root@127.0.0.1 -p 36022`
   
   
