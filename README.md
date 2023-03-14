@@ -18,6 +18,7 @@
 - [vim笔记](note/vim.md)
 - [redis笔记](note/redis/Redis.md)
 - [c++ 多线程笔记](note/MTthread.md)
+- [设计模式](note/设计模式.md)
 
 ## 文件 🎉
 - [视频裁剪脚本](file/video_cap.py)
@@ -53,4 +54,5 @@
     #在输出中找到Location字段，记录下路径
     #在conda环境中使用以下命令添加路径到PYTHONPATH环境变量：
     export PYTHONPATH=$PYTHONPATH:~/.local/lib/python3.8/dist-packages
+    #路径为show出的路径
     ```
