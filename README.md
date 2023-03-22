@@ -19,7 +19,7 @@
 - [redis笔记](note/redis/Redis.md)
 - [c++ 多线程笔记](note/MTthread.md)
 - [设计模式](note/设计模式.md)
-
+- [gstreamer](note/gstreamer/gstreamer.md)
 ## 文件 🎉
 - [视频裁剪脚本](file/video_cap.py)
 - [视频转图片脚本](file/video_2_picture.py)
