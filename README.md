@@ -7,6 +7,7 @@
 - [git创建远程仓库](https://www.cnblogs.com/yanqingyang/p/9839664.html)
 - [linux命令查询](https://wangchujiang.com/linux-command/)
 - [cmake 学习网站](https://sfumecjf.github.io/cmake-examples-Chinese/)
+- [开源实时流媒体服务器SRS文档](https://ossrs.net/lts/zh-cn/docs/v4/doc/introduction)
 ## 文档 ✨
 - [煤矿文档](/documnet/coal_config.md)
 - [win下docker+wsl](documnet/docker_desktop换盘.md)
@@ -19,7 +20,7 @@
 - [redis笔记](note/redis/Redis.md)
 - [c++ 多线程笔记](note/MTthread.md)
 - [设计模式](note/设计模式.md)
-- [gstreamer](note/gstreamer/gstreamer.md)
+- [gstreamer笔记](note/gstreamer/gstreamer.md)
 ## 文件 🎉
 - [视频裁剪脚本](file/video_cap.py)
 - [视频转图片脚本](file/video_2_picture.py)
