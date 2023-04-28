@@ -1,29 +1,23 @@
 ># ***煤矿***
-## **使用阿里云安装 docker**
+## **安装 docker及nvidia-docker**
+[nvidia-docker文档地址](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker)
 ```bash
-curl -fsSL https://get.docker.com -o get-docker.sh
-
-sudo sh get-docker.sh --mirror=Aliyun       # 一键安装 docker
-
-sudo systemctl start docker //启动docker
-
-sudo systemctl enable docker //开机启动docker
-
+# 基本步骤如下，具体根据系统不同需要自己去看上面的nvidia文档
+#curl -fsSL https://get.docker.com -o get-docker.sh
+#sudo sh get-docker.sh --mirror=Aliyun       # 一键安装 docker
+#sudo systemctl start docker //启动docker
+#sudo systemctl enable docker //开机启动docker
 # 设置stable存储库和GPG密钥：
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-   && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
-   && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-
-sudo apt-get update
-
+#distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+#   && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
+#  && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+#sudo apt-get update
 # 安装nvidia-docker
-sudo apt-get install -y nvidia-docker2
-
+#sudo apt-get install -y nvidia-docker2
 # 设置默认运行时后，重新启动Docker守护程序以完成安装：
-sudo systemctl restart docker
-
+#sudo systemctl restart docker
 #测试nvidia-docker是否安装成功
-sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+#sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
 ```
 
 ## **拉取triton镜像**
@@ -33,7 +27,7 @@ docker run -it --net=host --gpus=all -v /newdisk:/home/ --restart=always --name 
 ```
 
 ## **容器内配置**
-1. 在/workspace目录下创建triton_deploy/models文件夹作为模型仓库
+1. 在/workspace目录下创建triton_deploy/models文件夹作为模型仓库(**重要**)
 2. 克隆tensorrtx到/opt/nvidia/  (一下步骤适用于yolov5模型)
 
     - `git clone https://github.com/wang-xinyu/tensorrtx.git`   
@@ -56,7 +50,9 @@ docker run -it --net=host --gpus=all -v /newdisk:/home/ --restart=always --name 
    - 模型转换操作，以人脸检测为例：  
     `./yolov5 -s yolov5s-face.wts yolov5s.face.engine s `
 7. 将生成的engine文件改名为model.plan并放到对应模型的1目录下
-8. 在 `/opt` 目录下  
+8. 在/workspace目录下创建triton_deploy/plugins,将生成的plugin放进此目录并更名为 `libmyplugins.so`(**重要**)----至此环境搭建完成，其余的为各种模型转换。
+9. triton启动命令 `cd /opt/tritonserver/bin && LD_PRELOAD=/workspace/triton_deploy/plugins/libmyplugins.so ./tritonserver --model-repository /workspace/triton_deploy/models`
+10. 在 `/opt` 目录下  
     ```bash
     git clone https://github.com/PaddlePaddlePaddleDetection.git
 
