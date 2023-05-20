@@ -10,8 +10,11 @@
 - [开源实时流媒体服务器SRS文档](https://ossrs.net/lts/zh-cn/docs/v4/doc/introduction)
 ## 文档 ✨
 - [煤矿文档](/documnet/coal_config.md)
+- [yolov6 -> rknn量化部署](/documnet/yolov6_to_rknn.md)
+- [rk3568](/documnet/rk3568.md)
 - [win下docker+wsl](documnet/docker_desktop换盘.md)
 - [ubuntu 系统安装](documnet/ubuntu_installation.md)
+
   
 ## 笔记 🔥
 - [docker笔记](note/docker.md)
