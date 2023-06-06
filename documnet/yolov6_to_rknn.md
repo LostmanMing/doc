@@ -276,3 +276,26 @@ except Exception as e:
     rknn.accuracy_analysis(inputs=[img],output_dir="./snapshot_rk",target='rk3568',device_id='f087bc7dc513cb4f')
     ```
     > 注： 连板和不连板各运行一次，查看保存下来的 error_analysis.txt 中 runtime_error 误差具体在哪出现，再对模型进行修改，可以将模型结果在误差出现前就返回，后面的操作全部写在后处理中。
+
+
+
+
+# Q&A
+Question 1
+```bash
+E RKNNAPI: rknn_init,  server connect fail!  ret = -9(ERROR_PIPE)!
+E init_runtime: The rknn_server on the concected device is abnormal, please start the rknn_server on the device according to:
+               https://github.com/rockchip-linux/rknpu2/blob/master/rknn_server_proxy.md
+W init_runtime: ===================== WARN(4) =====================
+E rknn-toolkit2 version: 1.4.0-22dcfef4
+E init_runtime: Catch exception when init runtime!
+E init_runtime: Traceback (most recent call last):
+E init_runtime:   File "rknn/api/rknn_base.py", line 1985, in rknn.api.rknn_base.RKNNBase.init_runtime
+E init_runtime:   File "rknn/api/rknn_runtime.py", line 362, in rknn.api.rknn_runtime.RKNNRuntime.build_graph
+E init_runtime:   File "rknn/api/rknn_log.py", line 113, in rknn.api.rknn_log.RKNNLog.e
+E init_runtime: ValueError: The rknn_server on the concected device is abnormal, please start the rknn_server on the device according to:
+E init_runtime:                https://github.com/rockchip-linux/rknpu2/blob/master/rknn_server_proxy.md
+Init runtime environment failed!
+```
+answer:
+板端rknn_server没开，无法连板测试。
