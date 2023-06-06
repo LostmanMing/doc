@@ -48,6 +48,7 @@
     - [`fetch_add` / `store` / `load`](#fetch_add--store--load)
     - [`exchange`](#exchange)
     - [`compare_exchange_strong`](#compare_exchange_strong)
+- [自旋锁](#自旋锁)
 
 
 # 线程 
@@ -1205,4 +1206,83 @@
 
         return 0;
     }
+    ```
+
+# 自旋锁
+相比于系统调用阻塞线程，自旋锁更加轻量级，没有上下文的互换。  
+如果进线程无法取得锁，进线程**不会立刻放弃CPU时间片**，而是**一直循环尝试获取锁**，直到获取为止。如果**别的线程长时期占有锁**那么**自旋就是在浪费CPU做无用功**，但是自旋锁一般应用于**加锁时间很短**的场景，这个时候**效率比较高**。    
+自旋锁 `spinlock` 得自己用 `atomic<bool>` 或者说 `CAS` 实现。  
+`CAS(Compare and Swap)` 是一种**原子操作**，上面介绍的 `compare_exchange_weak` 和 `compare_exchange_strong` 都是 `stl` 中 `atomic` 库中的一个函数
+如
+```cpp
+atomic<bool> flag_;
+flag_.compare_exchange_weak(expected, true)
+```
+ 当前值与期望值(`expect`)相等时，修改当前值为设定值(`desired`)，返回 `true`  
+ 当前值与期望值(`expect`)不等时，将期望值(`expect`)修改为当前值，返回 `false`
+
+ - 基于 `atomic<bool>` 实现的简单自旋锁
+    ```cpp
+    #include <iostream>
+    #include <thread>
+    #include <atomic>
+
+    std::atomic<bool> lock(false);  // 原子变量用于表示自旋锁的状态
+
+    void criticalSection(int threadId) {
+        while (lock.exchange(true)) {
+            // 自旋等待，直到获取到自旋锁
+        }
+        // 进入临界区
+        std::cout << "Thread " << threadId << " entered the critical section." << std::endl;
+
+        // 模拟临界区的工作
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        // 离开临界区
+        std::cout << "Thread " << threadId << " exited the critical section." << std::endl;
+
+        lock.store(false);  // 释放自旋锁
+    }
+
+    int main() {
+        std::thread t1(criticalSection, 1);
+        std::thread t2(criticalSection, 2);
+
+        t1.join();
+        t2.join();
+
+        return 0;
+    }
+    ```
+- 基于 `CAS` 实现的简单自旋锁
+    ```cpp
+    #include <atomic>
+
+    class SpinLock
+    {
+    public:
+        SpinLock() : flag_(false) {}
+
+        void lock(){
+            bool expected = false;
+            while (!flag_.compare_exchange_weak(expected, true))
+            {
+                expected = false;
+                // 自旋等待，直到成功获取到自旋锁
+                // 使用compare_exchange_weak函数尝试将flag_的值从expected（false）替换为true
+                // 如果替换成功，则表示获取到了自旋锁，循环结束
+                // 如果替换失败，则将expected重置为false，再次尝试获取自旋锁
+                // 这里使用compare_exchange_weak而不是compare_exchange_strong是为了性能考虑
+            }
+        }
+        void unlock(){
+            flag_.store(false);
+            // 释放自旋锁，将flag_设置为false，表示自旋锁不再被持有
+        }
+    private:
+        std::atomic<bool> flag_;
+        // 使用std::atomic<bool>来表示自旋锁的状态
+        // 原子变量保证了多线程环境下的原子性操作，避免竞态条件
+    };
     ```
