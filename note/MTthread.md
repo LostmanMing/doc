@@ -1052,7 +1052,44 @@ auto submit(Func &&func, Ts &&... params)
 - 他还有 `wait_for()` 和 `wait_until()` 函数，分别接受 `chrono` **时间段**和**时间点**作为参数。详见：[cppreference](https://en.cppreference.com/w/cpp/thread/condition_variable/wait_for)。
 
 ### `wait_for()` / `wait_until()`
+- `wait_for()` 有两个重载形式 
+    |type|formart|
+    |--|--|
+    |unconditional (1)|`template <class Rep, class Period> cv_status wait_for (unique_lock<mutex>& lck, const chrono::duration<Rep,Period>& rel_time);` |
+    |predicate (2)|`template <class Rep, class Period, class Predicate> bool wait_for (unique_lock<mutex>& lck, const chrono::duration<Rep,Period>& rel_time, Predicate pred);` |
+- 第二种形式的返回值是根据谓词 `pred` 的返回值确定。
+- 千万不要把 `wait_for()` 的返回值看做是否超时，其真正意义是 `pred func` 的返回值，当 `pred` 返回 `true` 时，即使已经超时，`wait_for()` 仍然会返回 `true`。
+- 当 `pred` 为 `true` 时，`wait_for()` 直接返回 `true`
+- 当 `pred` 为 `false` 时，`wait_for` 会阻塞线程，此时有解除阻塞：
 
+    1. 另一个线程使用 `notifiy_one()` 或者 `notifiy_all()` 将唤醒 `wait_for()`，此时 `wait_for()` 会再次执行 `pred` ，并将返回值作为自己的返回值。
+    2. 超时，到达第二个参数设定的超时时间，此时 `wait_for()` **无需等待** `notifiy` 函数唤醒，同样会再次执行 `pred` ，并将返回值作为自己的返回值。
+- `pred_func` **执行时机**：语句执行时执行一次，超时**或者** `cv.notifiy_one()` 时执行一次。
+    ```cpp
+    int main()
+    {
+        std::cout << "Please, enter an integer (I'll be printing dots): \n";
+        std::thread th(do_read_value);
+    
+        std::unique_lock<std::mutex> lck(mtx);
+        std::cout << "main pid: " << std::this_thread::get_id() << std::endl;
+        //最后一个参数是预制条件，调用wait_for的时候，首先就会判断这个条件，
+        //如果这个条件返回false，那么会继续等待，如果再超时之前，收到了一个notify
+        //那么他会再次执行这个预制条件来进行判断，超时的时候也还会再此执行这个条件，
+        //条件成立就不会再进行等待
+        //这种可以用在处理队列事件
+        cv.wait_for(lck, std::chrono::seconds(20), [] {
+            std::cout << "begin cPid:" <<std::this_thread::get_id()<< std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::cout << "end" << std::endl; 
+            return false;
+            });
+        std::cout << "aaaaaaaaa" << std::endl;
+        std::cout << "You entered: " << value << '\n';
+        std::this_thread::sleep_for(std::chrono::seconds(100));
+        return 0;
+    }
+    ```
 # 原子
 - 一些代码看起来我们只写了一句，但 cpu 看起来其实是多个指令，此时使用多线程会破坏原子性。
 **经典案例：多个线程修改同一个计数器**
