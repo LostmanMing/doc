@@ -16,6 +16,7 @@
     - [`wait_until()`](#wait_until)
     - [`std::launch::deffer`](#stdlaunchdeffer)
   - [2. ***std::promise***](#2-stdpromise)
+  - [2. ***std::packaged\_task***](#2-stdpackaged_task)
 - [互斥量](#互斥量)
   - [1. ***std::mutex***](#1-stdmutex)
     - [`lock()/unlock()`](#lockunlock)
@@ -355,6 +356,69 @@
 - `future` 为了三五法则，删除了拷贝构造/赋值函数。如果需要浅拷贝，实现共享同一个 `future` 对象，可以用 `std::shared_future`.
 - 如果不需要返回值，`std::async` 里 `lambda` 的返回类型可以为 `void`， 这时 `future` 对象的类型为 `std::future<void>`。
 - 同理有 `std::promise<void>`，他的 `set_value()` 不接受参数，仅仅作为**同步**用，不传递任何实际的值。
+## 2. ***std::packaged_task***
+- C++中有多种可调用对象,他们可以作为参数传给 `std::bind()` , `std::thread()` , `std::async()`, `std::call_once()` 等。
+- 类似于 `std::funciton`, `std::packaged_task` 可以绑定一个可调用对象, 并执行,但是它的返回类型是`void`，获取它的返回值必须用 `functrue` 。
+- 使用 `std::packaged_task` 需要将可调用对象包装在 `std::packaged_task` 对象中，然后通过调用`std::packaged_task` 对象的 `operator()` 执行异步操作。
+- 两种绑定方法：
+    ```cpp
+    int main()
+    {
+        //普通方法
+        std::packaged_task<int(int)> t(factorial);   //factorial 是一个函数或者可调用对象
+        // 如何给它传入固定参数, 而不必在调用时指定
+        std::packaged_task<int()> t(std::bind(factorial, 6));
+
+        // do something else
+
+        t(); // in a different context， always return void  调用()执行绑定的可调用对象，调用时返回值为void
+        int x = t.get_future().get();   //绑定时指定的返回值
+        std::cout << x << std::endl;
+        return 0;
+    }
+    ```
+注意:使用 `std:packaged_task` 关联的 `std::future` 对象保存的数据类型是可调对象的返回结果类型，如示例函数的返回结果类型是`int`,那么声明为 `std::future<int>`, 而不是 `std:future<int(int)>`。
+- 示例：
+```cpp
+std::queue<Task>                      tasks_;
+using MutexGuard = std::lock_guard<std::mutex>;
+using UniqueLock = std::unique_lock<std::mutex>;
+using Thread     = std::thread;
+using ThreadID   = std::thread::id;
+using Task       = std::function<void()>;
+auto submit(Func &&func, Ts &&... params) 
+        -> std::future<typename std::result_of<Func(Ts...)>::type>        
+    {
+        auto execute = std::bind(std::forward<Func>(func), std::forward<Ts>(params)...);
+        
+        using ReturnType = typename std::result_of<Func(Ts...)>::type;
+        using PackagedTask = std::packaged_task<ReturnType()>;
+        
+        auto task = std::make_shared<PackagedTask>(std::move(execute)); 
+        auto result = task->get_future();
+        
+        MutexGuard guard(mutex_);
+        assert(!quit_);
+     
+        tasks_.emplace([task]()
+                       {
+                           (*task)();
+                       });
+        if (idleThreads_ > 0)
+        {
+            cv_.notify_one();
+        }
+        else if (currentThreads_ < maxThreads_)
+        {
+            Thread t(&ThreadPool::worker, this);            
+            assert(threads_.find(t.get_id()) == threads_.end());
+            threads_[t.get_id()] = std::move(t);
+            ++currentThreads_;
+        }        
+
+        return result;
+    }
+```
 
 #  互斥量
 ## 1. ***std::mutex***
