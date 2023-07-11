@@ -140,8 +140,10 @@
     `docker cp 本地主机path 容器名/ID:path`
     - *导出容器的内容作为一个tar归档文件（对应import命令）*  
     `docker export 容器名/ID > 文件名.tar` 
-    - *从tar包中创建一个新的文件系统再导入为镜像（对应export命令）*
+    - *从tar包中创建一个新的文件系统再导入为镜像（对应export命令）*  
     `cat 文件名.tar | docker import - 镜像用户/镜像名:TAG` 
+    - *docker 容器启动后发现没有加上--restart=always*  
+    `docker container update --restart=always 容器名字`
    
  ## **Docker容器数据卷**
 1. ### *什么是容器数据卷*
@@ -327,20 +329,20 @@
 - 执行 `docker-compose up` 命令来启动并运行整个应用程序，完成一键部署上线
 
     >***compose常用命令***
-    `docker-compose -h`     # 查看帮助
-    `docker-compose up`     # 启动所有docker-compose服务
-    `docker-compose up -d`  # 启动所有docker-compose服务并后台运行
-    `docker-compose down`   # 停止并删除容器、网络、卷、镜像。
-    `docker-compose exec`  yml里面的服务id            # 进入容器实例内部  
-      etc. `docker-compose exec docker-compose.yml文件中写的服务id /bin/bash`
-    `docker-compose ps`     # 展示当前docker-compose编排过的运行的所有容器
-    `docker-compose top`    # 展示当前docker-compose编排过的容器进程
-    `docker-compose logs  yml里面的服务id`     # 查看容器输出日志
-    `docker-compose config`     # 检查配置
-    `docker-compose config -q`  # 检查配置，有问题才有输出
-    `docker-compose restart`   # 重启服务
-    `docker-compose start`     # 启动服务
-    `docker-compose stop`      # 停止服务
+    `docker-compose -h`     # 查看帮助  
+    `docker-compose up`     # 启动所有docker-compose服务  
+    `docker-compose up -d`  # 启动所有docker-compose服务并后台运行  
+    `docker-compose down`   # 停止并删除容器、网络、卷、镜像。  
+    `docker-compose exec`  yml里面的服务id            # 进入容器实例内部    
+      etc. `docker-compose exec docker-compose.yml文件中写的服务id /bin/bash`  
+    `docker-compose ps`     # 展示当前docker-compose编排过的运行的所有容器  
+    `docker-compose top`    # 展示当前docker-compose编排过的容器进程  
+    `docker-compose logs  yml里面的服务id`     # 查看容器输出日志  
+    `docker-compose config`     # 检查配置  
+    `docker-compose config -q`  # 检查配置，有问题才有输出  
+    `docker-compose restart`   # 重启服务  
+    `docker-compose start`     # 启动服务  
+    `docker-compose stop`      # 停止服务  
 
 
  ## **docker Portainer**
