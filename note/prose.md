@@ -1,3 +1,5 @@
+- c++17 结构化绑定拆解pair或者tumple `auto [i1,i2] = p`
+- std::next 内部会判断传入迭代器的类型，如果是random_access，则直接+n，否则使用forward一步一步++;next不会修改迭代器指向，因为传的是值，而std::advance是按引用传递，会改变迭代器指向。advance相当于+=,next相当于+。advance和next都支持负数，std中同样提供了反向移动，std::prev,必须要求迭代器为双向迭代器。std::distance(it1,it2)，相当于 it1-it2,可以得到两个迭代器之间的元素个数。
 - 通过事件可以实现cuda流之间的同步，事件测量等，cudaEventCreate创建事件，cudaEventRecord将事件在流的某个位置标记下来，cudaEventSynchronize事件同步，保证某个事件已经完成。cudaSreamWaitEvent,流之间通过事件同步
 - cuda异步拷贝  cudaMemcpyAsync 
     1. 异步数据拷贝在显示创建的CUDA stream中创建
