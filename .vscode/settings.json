@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.scpp": "cpp",
+        "*.swcu": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp"
+    }
+}
